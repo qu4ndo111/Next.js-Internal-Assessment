@@ -1,0 +1,26 @@
+{
+  "Common": {
+    "search": "Tìm kiếm...",
+    "add": "Thêm mới",
+    "filter": "Lọc",
+    "noData": "Không tìm thấy dữ liệu."
+  },
+  "Login": {
+    "title": "Đăng nhập hệ thống",
+    "subtitle": "AQ Portal - Quản trị Thẩm định Bồi thường",
+    "emailLabel": "Email doanh nghiệp",
+    "passwordLabel": "Mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "loginButton": "Đăng nhập",
+    "orContinueWith": "Hoặc tiếp tục với",
+    "ssoButton": "Microsoft 365 (SSO)",
+    "terms": "Bằng việc đăng nhập, bạn đồng ý với <termsLink>Điều khoản dịch vụ</termsLink> và <privacyLink>Chính sách bảo mật</privacyLink> của chúng tôi.",
+    "errors": {
+      "emailRequired": "Vui lòng nhập email",
+      "emailInvalid": "Email không đúng định dạng",
+      "passwordRequired": "Vui lòng nhập mật khẩu",
+      "passwordMin": "Mật khẩu phải từ {min} ký tự",
+      "authFailed": "Email hoặc mật khẩu không chính xác"
+    }
+  }
+}

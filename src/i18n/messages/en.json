@@ -1,0 +1,26 @@
+{
+  "Common": {
+    "search": "Search...",
+    "add": "Add New",
+    "filter": "Filter",
+    "noData": "No data found."
+  },
+  "Login": {
+    "title": "Sign in to system",
+    "subtitle": "AQ Portal - Assessment Management",
+    "emailLabel": "Work Email",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign In",
+    "orContinueWith": "Or continue with",
+    "ssoButton": "Microsoft 365 (SSO)",
+    "terms": "By signing in, you agree to our <termsLink>Terms of Service</termsLink> and <privacyLink>Privacy Policy</privacyLink>.",
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least {min} characters",
+      "authFailed": "Invalid email or password"
+    }
+  }
+}
