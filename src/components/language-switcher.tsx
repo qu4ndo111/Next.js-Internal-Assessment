@@ -4,7 +4,6 @@ import * as React from "react"
 import { useLocale } from "next-intl"
 import { Languages } from "lucide-react"
 import { setUserLocale } from "@/src/actions/locale"
-import { Button } from "@/src/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,11 +23,9 @@ export function LanguageSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" disabled={isPending}>
-          <Languages className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Switch language</span>
-        </Button>
+      <DropdownMenuTrigger className="inline-flex shrink-0 items-center justify-center rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 w-9 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors disabled:opacity-50 disabled:pointer-events-none" disabled={isPending}>
+        <Languages className="h-[1.2rem] w-[1.2rem]" />
+        <span className="sr-only">Switch language</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem 

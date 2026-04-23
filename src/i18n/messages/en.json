@@ -22,5 +22,22 @@
       "passwordMin": "Password must be at least {min} characters",
       "authFailed": "Invalid email or password"
     }
+  },
+  "Theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggleTheme": "Toggle theme"
+  },
+  "Dashboard": {
+    "kpiOverview": "KPI Overview",
+    "assessments": "Assessments",
+    "reportsAnalytics": "Reports & Analytics",
+    "systemSettings": "System Settings",
+    "systemTitle": "Compensation Management System",
+    "myAccount": "My Account",
+    "profile": "Profile",
+    "notificationSettings": "Notification Settings",
+    "logout": "Log out"
   }
 }

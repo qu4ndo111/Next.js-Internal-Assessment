@@ -22,5 +22,22 @@
       "passwordMin": "Mật khẩu phải từ {min} ký tự",
       "authFailed": "Email hoặc mật khẩu không chính xác"
     }
+  },
+  "Theme": {
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống",
+    "toggleTheme": "Đổi giao diện"
+  },
+  "Dashboard": {
+    "kpiOverview": "Tổng quan KPI",
+    "assessments": "Hồ sơ thẩm định",
+    "reportsAnalytics": "Báo cáo & Phân tích",
+    "systemSettings": "Cài đặt hệ thống",
+    "systemTitle": "Hệ thống Quản trị Bồi thường",
+    "myAccount": "Tài khoản của tôi",
+    "profile": "Hồ sơ cá nhân",
+    "notificationSettings": "Thiết lập thông báo",
+    "logout": "Đăng xuất"
   }
 }

@@ -38,11 +38,9 @@ export default function AssessmentsPage() {
             />
           </div>
           <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" className="gap-2 bg-background border-dashed">
-                <SlidersHorizontal className="h-4 w-4" />
-                Lọc nâng cao
-              </Button>
+            <SheetTrigger className="inline-flex shrink-0 items-center justify-center rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2 border-dashed text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors">
+              <SlidersHorizontal className="h-4 w-4" />
+              Lọc nâng cao
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>

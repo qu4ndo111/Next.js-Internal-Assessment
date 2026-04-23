@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ModeToggle } from "@/src/components/mode-toggle";
-import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +11,9 @@ import {
 import { LayoutDashboard, FileStack, BarChart3, Settings, CircleUser } from "lucide-react";
 import { redirect } from 'next/navigation'
 import { cookies } from "next/headers";
+import { LanguageSwitcher } from "@/src/components/language-switcher";
+
+import { getTranslations } from "next-intl/server";
 
 export default async function DashboardLayout({
   children,
@@ -24,6 +26,8 @@ export default async function DashboardLayout({
   if (!token) {
     redirect("/login");
   }
+
+  const t = await getTranslations("Dashboard");
 
   return (
     <div className="flex min-h-screen w-full flex-col md:flex-row bg-muted/40">
@@ -47,7 +51,7 @@ export default async function DashboardLayout({
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
             >
               <LayoutDashboard className="h-4 w-4" />
-              Tổng quan KPI
+              {t("kpiOverview")}
             </Link>
             
             <Link
@@ -55,7 +59,7 @@ export default async function DashboardLayout({
               className="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2 text-primary transition-all font-semibold"
             >
               <FileStack className="h-4 w-4" />
-              Hồ sơ thẩm định
+              {t("assessments")}
             </Link>
             
             <Link
@@ -63,7 +67,7 @@ export default async function DashboardLayout({
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
             >
               <BarChart3 className="h-4 w-4" />
-              Báo cáo & Phân tích
+              {t("reportsAnalytics")}
             </Link>
             
             <div className="my-2 border-t" /> {/* Dải phân cách */}
@@ -73,7 +77,7 @@ export default async function DashboardLayout({
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
             >
               <Settings className="h-4 w-4" />
-              Cài đặt hệ thống
+              {t("systemSettings")}
             </Link>
           </nav>
         </div>
@@ -84,28 +88,27 @@ export default async function DashboardLayout({
         {/* HEADER */}
         <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6 justify-between">
           <div className="font-semibold text-lg tracking-tight text-foreground/80">
-            Hệ thống Quản trị Bồi thường
+            {t("systemTitle")}
           </div>
           
           <div className="flex items-center gap-4">
             {/* Nút Đổi Theme (Sáng/Tối) */}
             <ModeToggle />
+            <LanguageSwitcher />
             
             {/* User Profile Menu */}
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button variant="secondary" size="icon" className="rounded-full">
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
+              <DropdownMenuTrigger className="inline-flex shrink-0 items-center justify-center rounded-full h-9 w-9 bg-secondary text-secondary-foreground hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors">
+                <CircleUser className="h-5 w-5" />
+                <span className="sr-only">Toggle user menu</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
+                <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Hồ sơ cá nhân</DropdownMenuItem>
-                <DropdownMenuItem>Thiết lập thông báo</DropdownMenuItem>
+                <DropdownMenuItem>{t("profile")}</DropdownMenuItem>
+                <DropdownMenuItem>{t("notificationSettings")}</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">Đăng xuất</DropdownMenuItem>
+                <DropdownMenuItem className="text-red-600">{t("logout")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
