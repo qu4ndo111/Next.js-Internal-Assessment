@@ -28,3 +28,9 @@ export async function fakeLogin(formData: LoginSchema) {
 
   return { error: "Sai email hoặc mật khẩu!" }
 }
+
+export async function logout() {
+  const cookieStore = await cookies()
+  cookieStore.delete("access_token")
+  redirect("/login")
+}

@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fakeLogin } from "@/app/actions/auth";
+import { fakeLogin } from "@/src/actions/auth";
 
 interface LoginSchema {
     email: string;
@@ -51,7 +51,7 @@ export default function LoginPage() {
                 <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 space-y-6">
                     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
 
-                        <div className="space-y-2"> 
+                        <div className="space-y-2">
                             <label className="text-sm font-medium leading-none" htmlFor="email">
                                 {t("emailLabel")}
                             </label>

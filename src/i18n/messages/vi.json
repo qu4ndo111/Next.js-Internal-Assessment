@@ -39,5 +39,86 @@
     "profile": "Hồ sơ cá nhân",
     "notificationSettings": "Thiết lập thông báo",
     "logout": "Đăng xuất"
+  },
+  "Assessments": {
+    "title": "Hồ sơ thẩm định",
+    "description": "Hệ thống quản lý và xét duyệt các yêu cầu bồi thường bảo hiểm nội bộ.",
+    "createNew": "Tạo hồ sơ mới",
+    "searchPlaceholder": "Mã hồ sơ, tên khách hàng...",
+    "filter": {
+      "advanced": "Lọc nâng cao",
+      "title": "Bộ lọc tìm kiếm",
+      "statusLabel": "Trạng thái hồ sơ",
+      "statusPlaceholder": "Chọn trạng thái",
+      "typeLabel": "Loại hình bồi thường",
+      "typePlaceholder": "Chọn loại bồi thường",
+      "clear": "Xóa",
+      "apply": "Áp dụng"
+    },
+    "status": {
+      "PENDING": "Đang chờ",
+      "IN_REVIEW": "Đang xử lý",
+      "APPROVED": "Đã duyệt",
+      "REJECTED": "Từ chối",
+      "ADDITIONAL_INFO_REQUESTED": "Yêu cầu bổ sung",
+      "PARTIALLY_APPROVED": "Duyệt một phần"
+    },
+    "claimType": {
+      "MEDICAL": "Y tế",
+      "ACCIDENT": "Tai nạn",
+      "PROPERTY": "Tài sản",
+      "DEATH": "Tử vong",
+      "DISABILITY": "Thương tật"
+    },
+    "priority": {
+      "URGENT": "GẤP",
+      "HIGH": "CAO",
+      "MEDIUM": "TRUNG BÌNH",
+      "LOW": "THẤP"
+    },
+    "columns": {
+      "id": "Mã Hồ Sơ",
+      "insuredName": "Khách hàng",
+      "claimType": "Loại bồi thường",
+      "priority": "Ưu tiên",
+      "status": "Trạng thái",
+      "claimedAmount": "Số tiền yêu cầu",
+      "actions": "Thao tác"
+    },
+    "actions": {
+      "title": "Thao tác",
+      "viewDetails": "Xem chi tiết",
+      "quickApprove": "Duyệt nhanh",
+      "requestInfo": "Yêu cầu bổ sung",
+      "reject": "Từ chối"
+    },
+    "details": {
+      "title": "Chi tiết hồ sơ thẩm định",
+      "id": "Mã hồ sơ: ",
+      "customer": "KHÁCH HÀNG",
+      "contractNo": "SỐ HỢP ĐỒNG",
+      "claimType": "LOẠI BỒI THƯỜNG",
+      "priority": "MỨC ĐỘ ƯU TIÊN",
+      "claimedAmount": "SỐ TIỀN YÊU CẦU",
+      "assessor": "NGƯỜI THẨM ĐỊNH",
+      "internalNotes": "GHI CHÚ NỘI BỘ",
+      "noNotes": "Không có ghi chú.",
+      "close": "Đóng",
+      "startAssessment": "Bắt đầu thẩm định"
+    }
+  },
+  "src": {
+    "components": {
+      "ui": {
+        "data-table": {
+          "rowsPerPage": "Số dòng mỗi trang",
+          "page": "Trang",
+          "of": "trên",
+          "noData": "Không tìm thấy dữ liệu.",
+          "total": "Tổng số",
+          "records": "hồ sơ"
+        }
+      }
+    }
   }
 }

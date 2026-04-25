@@ -1,80 +1,61 @@
-import React from "react";
-import { Search, SlidersHorizontal, Plus } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/src/components/ui/sheet";
+import { DataTable } from "@/src/components/ui/data-table";
+import { columns } from "./columns";
+import { getAssessments } from "@/src/services/assessment";
+import AssessmentFilter from "./_components/assessment-filter";
+import { getTranslations } from "next-intl/server";
 
-export default function AssessmentsPage() {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function AssessmentsPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const t = await getTranslations("Assessments");
+
+  // Gọi API thông qua Service (Server-side fetching)
+  const data = await getAssessments({
+    status: params.status as string,
+    type: params.type as string,
+    search: params.q as string,
+  });
+
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Hồ sơ thẩm định</h1>
+          <h1 className="text-3xl font-bold tracking-tight bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            {t("title")}
+          </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Quản lý và xét duyệt các yêu cầu bồi thường bảo hiểm.
+            {t("description")}
           </p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
           <Plus className="h-4 w-4" />
-          Tạo hồ sơ mới
+          {t("createNew")}
         </Button>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex flex-1 items-center space-x-2">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Tìm theo mã hồ sơ, tên khách hàng..."
-              className="pl-9 bg-background"
+              placeholder={t("searchPlaceholder")}
+              className="pl-10 bg-background border-muted-foreground/20 focus-visible:ring-primary/30"
+              defaultValue={params.q as string}
             />
           </div>
-          <Sheet>
-            <SheetTrigger className="inline-flex shrink-0 items-center justify-center rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 gap-2 border-dashed text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors">
-              <SlidersHorizontal className="h-4 w-4" />
-              Lọc nâng cao
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Bộ lọc tìm kiếm</SheetTitle>
-                <SheetDescription>
-                  Thu hẹp danh sách hồ sơ cần thẩm định dựa trên các tiêu chí sau.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="py-6 space-y-4">
-                {/* Khu vực bạn sẽ code Filter logic sau này */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium leading-none">Trạng thái</label>
-                  <Input placeholder="Ví dụ: PENDING, APPROVED..." />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium leading-none">Loại bồi thường</label>
-                  <Input placeholder="Ví dụ: MEDICAL, ACCIDENT..." />
-                </div>
-                <Button className="w-full mt-4">Áp dụng bộ lọc</Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+          <AssessmentFilter searchParams={params} />
         </div>
       </div>
-      <div className="border border-dashed rounded-lg p-8">
-        <div className="flex flex-col items-center justify-center text-center space-y-3">
-          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Search className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="text-lg font-semibold">Chưa có Bảng dữ liệu</h3>
-          <p className="text-sm text-muted-foreground max-w-sm">
-            Khu vực này dành cho Data Table. Vui lòng làm theo hướng dẫn trong cửa sổ chat để tự build Data Table với Shadcn + Tanstack Table.
-          </p>
-        </div>
+
+      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+        <DataTable columns={columns} data={data} />
       </div>
     </div>
   );

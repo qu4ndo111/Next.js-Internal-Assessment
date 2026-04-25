@@ -39,5 +39,86 @@
     "profile": "Profile",
     "notificationSettings": "Notification Settings",
     "logout": "Log out"
+  },
+  "Assessments": {
+    "title": "Assessment Profiles",
+    "description": "Internal insurance compensation claims management and review system.",
+    "createNew": "Create New Profile",
+    "searchPlaceholder": "Profile ID, customer name...",
+    "filter": {
+      "advanced": "Advanced Filter",
+      "title": "Search Filter",
+      "statusLabel": "Profile Status",
+      "statusPlaceholder": "Select status",
+      "typeLabel": "Compensation Type",
+      "typePlaceholder": "Select type",
+      "clear": "Clear",
+      "apply": "Apply"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "IN_REVIEW": "In Review",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "ADDITIONAL_INFO_REQUESTED": "Additional Info Requested",
+      "PARTIALLY_APPROVED": "Partially Approved"
+    },
+    "claimType": {
+      "MEDICAL": "Medical",
+      "ACCIDENT": "Accident",
+      "PROPERTY": "Property",
+      "DEATH": "Death",
+      "DISABILITY": "Disability"
+    },
+    "priority": {
+      "URGENT": "URGENT",
+      "HIGH": "HIGH",
+      "MEDIUM": "MEDIUM",
+      "LOW": "LOW"
+    },
+    "columns": {
+      "id": "Profile ID",
+      "insuredName": "Customer",
+      "claimType": "Claim Type",
+      "priority": "Priority",
+      "status": "Status",
+      "claimedAmount": "Claimed Amount",
+      "actions": "Actions"
+    },
+    "actions": {
+      "title": "Actions",
+      "viewDetails": "View Details",
+      "quickApprove": "Quick Approve",
+      "requestInfo": "Request Info",
+      "reject": "Reject"
+    },
+    "details": {
+      "title": "Assessment Profile Details",
+      "id": "Profile ID: ",
+      "customer": "CUSTOMER",
+      "contractNo": "CONTRACT NO",
+      "claimType": "CLAIM TYPE",
+      "priority": "PRIORITY",
+      "claimedAmount": "CLAIMED AMOUNT",
+      "assessor": "ASSESSOR",
+      "internalNotes": "INTERNAL NOTES",
+      "noNotes": "No notes.",
+      "close": "Close",
+      "startAssessment": "Start Assessment"
+    }
+  },
+  "src": {
+    "components": {
+      "ui": {
+        "data-table": {
+          "rowsPerPage": "Rows per page",
+          "page": "Page",
+          "of": "of",
+          "noData": "No data found.",
+          "total": "Total",
+          "records": "records"
+        }
+      }
+    }
   }
 }
