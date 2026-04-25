@@ -61,14 +61,16 @@
       "APPROVED": "Approved",
       "REJECTED": "Rejected",
       "ADDITIONAL_INFO_REQUESTED": "Additional Info Requested",
-      "PARTIALLY_APPROVED": "Partially Approved"
+      "PARTIALLY_APPROVED": "Partially Approved",
+      "ALL": "All"
     },
     "claimType": {
       "MEDICAL": "Medical",
       "ACCIDENT": "Accident",
       "PROPERTY": "Property",
       "DEATH": "Death",
-      "DISABILITY": "Disability"
+      "DISABILITY": "Disability",
+      "ALL": "All"
     },
     "priority": {
       "URGENT": "URGENT",
