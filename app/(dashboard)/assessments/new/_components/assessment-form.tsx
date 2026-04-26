@@ -111,7 +111,6 @@ export default function AssessmentForm() {
 
     return (
         <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
-            {/* Section 1: Thông tin yêu cầu */}
             <div>
                 <h3 className="text-lg font-medium mb-4">{t("sections.requestInfo")}</h3>
                 <div className="flex flex-1 gap-2 flex-col mb-6">
@@ -216,8 +215,6 @@ export default function AssessmentForm() {
             </div>
 
             <div className="h-px bg-border" />
-
-            {/* Section 2: Phân công & Xử lý */}
             <div>
                 <h3 className="text-lg font-medium mb-4">{t("sections.assignment")}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -328,7 +325,6 @@ export default function AssessmentForm() {
                             />
                         </div>
 
-                        {/* File Preview List */}
                         {files.length > 0 && (
                             <div className="flex items-center flex-wrap gap-4 mt-4">
                                 {files.map((file, idx) => {
