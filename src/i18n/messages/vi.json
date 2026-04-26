@@ -44,6 +44,50 @@
     "title": "Hồ sơ thẩm định",
     "description": "Hệ thống quản lý và xét duyệt các yêu cầu bồi thường bảo hiểm nội bộ.",
     "createNew": "Tạo hồ sơ mới",
+    "create": {
+      "title": "Tạo hồ sơ thẩm định mới",
+      "description": "Nhập thông tin chi tiết để tạo hồ sơ bồi thường.",
+      "sections": {
+        "requestInfo": "Thông tin yêu cầu",
+        "assignment": "Phân công & Xử lý"
+      },
+      "fields": {
+        "claimId": "Mã yêu cầu gốc (claimId)",
+        "claimIdPlaceholder": "Nhập CLM-2024-...",
+        "fetch": "Tra cứu",
+        "insuredName": "Tên khách hàng",
+        "insuredNamePlaceholder": "Tên khách hàng",
+        "contractNo": "Số hợp đồng",
+        "contractNoPlaceholder": "Số hợp đồng",
+        "claimType": "Loại bồi thường",
+        "claimTypePlaceholder": "Chọn loại bồi thường",
+        "claimedAmount": "Số tiền yêu cầu",
+        "priority": "Mức độ ưu tiên",
+        "priorityPlaceholder": "Chọn mức độ ưu tiên",
+        "assignedTo": "Thẩm định viên (Assigned To)",
+        "assignedToPlaceholder": "Chọn người xử lý",
+        "deadline": "Hạn chót xử lý (Deadline)",
+        "deadlinePlaceholder": "Chọn ngày hạn chót",
+        "documents": "Tài liệu đính kèm",
+        "documentsDropzone": "Nhấn hoặc kéo thả file vào đây để tải lên",
+        "notes": "Ghi chú nội bộ",
+        "notesPlaceholder": "Nhập ghi chú cho hồ sơ này..."
+      },
+      "form": {
+        "claimIdRequired": "Vui lòng nhập mã yêu cầu",
+        "insuredNameRequired": "Vui lòng nhập tên khách hàng",
+        "contractNoRequired": "Vui lòng nhập số hợp đồng",
+        "claimTypeRequired": "Vui lòng chọn loại bồi thường",
+        "claimedAmountRequired": "Vui lòng nhập số tiền",
+        "deadlineRequired": "Vui lòng chọn hạn chót hợp lệ",
+        "descriptionRequired": "Vui lòng nhập ghi chú/mô tả",
+        "assignedToRequired": "Vui lòng chọn người xử lý"
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "submit": "Tạo hồ sơ"
+      }
+    },
     "searchPlaceholder": "Mã hồ sơ, tên khách hàng...",
     "filter": {
       "advanced": "Lọc nâng cao",

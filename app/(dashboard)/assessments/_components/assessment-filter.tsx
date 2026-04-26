@@ -103,7 +103,7 @@ export default function AssessmentFilter() {
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder={t("filter.typePlaceholder")} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="all">{t("claimType.ALL") || "Tất cả"}</SelectItem>
                   <SelectItem value="MEDICAL">{t("claimType.MEDICAL")}</SelectItem>
                   <SelectItem value="ACCIDENT">{t("claimType.ACCIDENT")}</SelectItem>

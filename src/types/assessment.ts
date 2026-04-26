@@ -37,3 +37,15 @@ export interface Assessment {
   documents: AssessmentDocument[];
   notes: string;
 }
+
+export interface CreateAssessmentInput {
+  claimId: string;
+  claimType: ClaimType;
+  insuredName: string;
+  contractNo: string;
+  claimedAmount: number;
+  priority: AssessmentPriority;
+  assignedTo: string;
+  documents: File[];
+  notes: string;
+}

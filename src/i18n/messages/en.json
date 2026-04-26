@@ -44,6 +44,50 @@
     "title": "Assessment Profiles",
     "description": "Internal insurance compensation claims management and review system.",
     "createNew": "Create New Profile",
+    "create": {
+      "title": "Create New Assessment Profile",
+      "description": "Enter details to create a new compensation profile.",
+      "sections": {
+        "requestInfo": "Request Information",
+        "assignment": "Assignment & Processing"
+      },
+      "fields": {
+        "claimId": "Original Claim ID (claimId)",
+        "claimIdPlaceholder": "Enter CLM-2024-...",
+        "fetch": "Fetch Data",
+        "insuredName": "Customer Name",
+        "insuredNamePlaceholder": "Customer Name",
+        "contractNo": "Contract No",
+        "contractNoPlaceholder": "Contract No",
+        "claimType": "Claim Type",
+        "claimTypePlaceholder": "Select Claim Type",
+        "claimedAmount": "Claimed Amount",
+        "priority": "Priority Level",
+        "priorityPlaceholder": "Select Priority",
+        "assignedTo": "Assigned To",
+        "assignedToPlaceholder": "Select Assessor",
+        "deadline": "Processing Deadline",
+        "deadlinePlaceholder": "Select Deadline",
+        "documents": "Attached Documents",
+        "documentsDropzone": "Click or drag files here to upload",
+        "notes": "Internal Notes",
+        "notesPlaceholder": "Enter notes for this profile..."
+      },
+      "form": {
+        "claimIdRequired": "Claim ID is required",
+        "insuredNameRequired": "Customer name is required",
+        "contractNoRequired": "Contract number is required",
+        "claimTypeRequired": "Claim type is required",
+        "claimedAmountRequired": "Claimed amount is required",
+        "deadlineRequired": "Valid deadline is required",
+        "descriptionRequired": "Description/Notes is required",
+        "assignedToRequired": "Assessor is required"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "submit": "Create Profile"
+      }
+    },
     "searchPlaceholder": "Profile ID, customer name...",
     "filter": {
       "advanced": "Advanced Filter",
