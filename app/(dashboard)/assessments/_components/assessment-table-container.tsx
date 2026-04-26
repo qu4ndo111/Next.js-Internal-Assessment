@@ -1,5 +1,5 @@
 import { getAssessments } from "@/src/services/assessment";
-import { columns } from "../columns";
+import { columns } from "./columns";
 import { DataTable } from "@/src/components/ui/data-table";
 
 interface PageProps {

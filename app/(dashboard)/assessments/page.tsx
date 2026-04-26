@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
 import AssessmentFilter from "./_components/assessment-filter";
 import { getTranslations } from "next-intl/server";
@@ -25,9 +26,11 @@ export default async function AssessmentsPage({ searchParams }: PageProps) {
             {t("description")}
           </p>
         </div>
-        <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-          <Plus className="h-4 w-4" />
-          {t("createNew")}
+        <Button asChild className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+          <Link href="/assessments/new">
+            <Plus className="h-4 w-4" />
+            {t("createNew")}
+          </Link>
         </Button>
       </div>
 

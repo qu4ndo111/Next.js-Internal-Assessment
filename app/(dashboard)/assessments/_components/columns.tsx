@@ -132,6 +132,7 @@ import {
   DialogFooter,
 } from "@/src/components/ui/dialog"
 import { useState } from "react"
+import { toast } from "sonner"
 
 function AssessmentActions({ assessment }: { assessment: Assessment }) {
   const tActions = useTranslations("Assessments.actions")
@@ -169,16 +170,16 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
             <Eye className="mr-2 h-4 w-4" />
             {tActions("viewDetails")}
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-green-600 cursor-pointer">
+          <DropdownMenuItem onClick={() => toast.success(tActions('quickApprove'))} className="text-green-600 cursor-pointer">
             <CheckCircle className="mr-2 h-4 w-4" />
             {tActions("quickApprove")}
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-purple-600 cursor-pointer">
+          <DropdownMenuItem onClick={() => toast.success(tActions('requestInfo'))} className="text-purple-600 cursor-pointer">
             <Clock className="mr-2 h-4 w-4" />
             {tActions("requestInfo")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-red-600 cursor-pointer">
+          <DropdownMenuItem onClick={() => toast.error(tActions('reject'))} className="text-red-600 cursor-pointer">
             <XCircle className="mr-2 h-4 w-4" />
             {tActions("reject")}
           </DropdownMenuItem>

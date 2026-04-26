@@ -77,7 +77,7 @@ export default function AssessmentFilter() {
             {t("filter.advanced")}
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md" aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("filter.title")}</DialogTitle>
           </DialogHeader>
