@@ -1,6 +1,6 @@
 import { Assessment } from "../types/assessment";
 
-export const FAKE_ASSESSMENTS: Assessment[] = [
+const initialAssessments: Assessment[] = [
   {
     id: "ASM-2025-001",
     claimId: "CLM-2025-101",
@@ -192,3 +192,14 @@ export const FAKE_ASSESSMENTS: Assessment[] = [
     notes: "Thiệt hại do bão lũ",
   }
 ];
+
+// Use globalThis to persist the fake data across module reloads in development
+declare global {
+  var assessments: Assessment[] | undefined;
+}
+
+export const FAKE_ASSESSMENTS = globalThis.assessments || initialAssessments;
+
+if (process.env.NODE_ENV !== "production") {
+  globalThis.assessments = FAKE_ASSESSMENTS;
+}

@@ -1,3 +1,6 @@
+"use server"
+
+import { revalidatePath } from "next/cache";
 import { FAKE_ASSESSMENTS } from "../data/assessments";
 import { Assessment, CreateAssessmentInput } from "../types/assessment";
 
@@ -5,8 +8,6 @@ export async function getAssessments(filters?: { status?: string; type?: string;
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   let data = [...FAKE_ASSESSMENTS];
-
-  console.log(FAKE_ASSESSMENTS)
 
   if (filters?.status) {
     data = data.filter((item) => item.status === filters.status);
@@ -48,7 +49,7 @@ export async function createAssessment(data: CreateAssessmentInput) {
     documents: data.documents.map((file) => ({
       id: Math.random().toString(36).substring(2, 9),
       name: file.name,
-      url: URL.createObjectURL(file),
+      url: `/documents/${file.name}`,
       type: file.type,
       uploadedAt: new Date().toISOString(),
     })),
@@ -56,6 +57,8 @@ export async function createAssessment(data: CreateAssessmentInput) {
   };
 
   FAKE_ASSESSMENTS.unshift(body);
+
+  revalidatePath("/assessments");
 
   return {
     success: true,
