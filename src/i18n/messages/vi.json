@@ -71,7 +71,8 @@
         "documents": "Tài liệu đính kèm",
         "documentsDropzone": "Nhấn hoặc kéo thả file vào đây để tải lên",
         "notes": "Ghi chú nội bộ",
-        "notesPlaceholder": "Nhập ghi chú cho hồ sơ này..."
+        "notesPlaceholder": "Nhập ghi chú cho hồ sơ này...",
+        "upload": "Tải lên"
       },
       "form": {
         "claimIdRequired": "Vui lòng nhập mã yêu cầu",
@@ -81,7 +82,9 @@
         "claimedAmountRequired": "Vui lòng nhập số tiền",
         "deadlineRequired": "Vui lòng chọn hạn chót hợp lệ",
         "descriptionRequired": "Vui lòng nhập ghi chú/mô tả",
-        "assignedToRequired": "Vui lòng chọn người xử lý"
+        "assignedToRequired": "Vui lòng chọn người xử lý",
+        "claimNotFound": "Không tìm thấy dữ liệu. Bạn vui lòng tự nhập thông tin thủ công.",
+        "submitting": "Đang khởi tạo hồ sơ thẩm định..."
       },
       "actions": {
         "cancel": "Hủy",

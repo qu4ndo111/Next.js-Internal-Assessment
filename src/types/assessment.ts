@@ -46,6 +46,7 @@ export interface CreateAssessmentInput {
   claimedAmount: number;
   priority: AssessmentPriority;
   assignedTo: string;
+  deadline: Date;
   documents: File[];
   notes: string;
 }

@@ -71,7 +71,8 @@
         "documents": "Attached Documents",
         "documentsDropzone": "Click or drag files here to upload",
         "notes": "Internal Notes",
-        "notesPlaceholder": "Enter notes for this profile..."
+        "notesPlaceholder": "Enter notes for this profile...",
+        "upload": "Upload"
       },
       "form": {
         "claimIdRequired": "Claim ID is required",
@@ -81,7 +82,9 @@
         "claimedAmountRequired": "Claimed amount is required",
         "deadlineRequired": "Valid deadline is required",
         "descriptionRequired": "Description/Notes is required",
-        "assignedToRequired": "Assessor is required"
+        "assignedToRequired": "Assessor is required",
+        "claimNotFound": "No data found for this ID. Please enter the information manually.",
+        "submitting": "Creating assessment profile..."
       },
       "actions": {
         "cancel": "Cancel",

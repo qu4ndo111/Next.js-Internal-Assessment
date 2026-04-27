@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/src/components/theme-provider";
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, getTranslations} from 'next-intl/server';
 import { Toaster } from "sonner";
+import { FullScreenLoader } from "@/src/components/ui/full-screen-loader";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -48,6 +49,7 @@ export default async function RootLayout({
         >
           <NextIntlClientProvider messages={messages}>
             {children}
+            <FullScreenLoader />
             <Toaster position="top-right" richColors/>
           </NextIntlClientProvider>
         </ThemeProvider>

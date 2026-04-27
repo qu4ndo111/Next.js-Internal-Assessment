@@ -1,12 +1,15 @@
 "use client"
 
 import { useState, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
-import { Calendar as CalendarIcon, UploadCloud, FileIcon, X } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+
+import { format } from "date-fns";
+import { vi, enUS } from "date-fns/locale";
+import { Calendar as CalendarIcon, UploadCloud, FileIcon, X, Loader2, Upload } from "lucide-react";
 
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
@@ -14,20 +17,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/src/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/src/components/ui/popover";
 import { Textarea } from "@/src/components/ui/textarea";
-import Image from "next/image";
+import { getClaimById } from "@/src/services/claim";
+import { createAssessment } from "@/src/services/assessment";
+import { toast } from "sonner";
+import { loadingService } from "@/lib/loading-service";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { getClaimById } from "@/src/services/claim";
-import { toast } from "sonner";
+import { ClaimType } from "@/src/types/assessment";
 
 export default function AssessmentForm() {
     const t = useTranslations("Assessments.create");
     const tAssessments = useTranslations("Assessments");
+    const locale = useLocale();
+    const router = useRouter();
+    const dateLocale = locale === "vi" ? vi : enUS;
 
     const [files, setFiles] = useState<File[]>([]);
     const [isFetched, setIsFetched] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const newAssessmentSchema = z.object({
@@ -36,18 +46,31 @@ export default function AssessmentForm() {
         contractNo: z.string().min(1, t("form.contractNoRequired")),
         claimType: z.string().min(1, t("form.claimTypeRequired")),
         claimedAmount: z.string().min(1, t("form.claimedAmountRequired")),
-        deadline: z.date().min(new Date(), t("form.deadlineRequired")),
-        description: z.string().min(1, t("form.descriptionRequired")),
+        deadline: z.date(),
+        description: z.string(),
         files: z.array(z.instanceof(File)),
-        priority: z.enum(["HIGH", "MEDIUM", "LOW"]),
+        priority: z.enum(["HIGH", "MEDIUM", "LOW", "URGENT"]),
         assignedTo: z.string().min(1, t("form.assignedToRequired")),
     })
 
     const { register, handleSubmit, setValue, watch, control, formState: { errors } } = useForm<z.infer<typeof newAssessmentSchema>>({
         resolver: zodResolver(newAssessmentSchema),
+        defaultValues: {
+            claimId: "",
+            insuredName: "",
+            contractNo: "",
+            claimType: "",
+            claimedAmount: "",
+            priority: "MEDIUM",
+            assignedTo: "",
+            description: "",
+            files: [],
+            deadline: new Date(),
+        }
     });
 
     const handleFetchData = async () => {
+        setIsFetching(true);
         const claimId = watch("claimId")
         if (!claimId) return;
 
@@ -61,9 +84,11 @@ export default function AssessmentForm() {
             setValue("claimType", response.claimType, { shouldValidate: true });
             setValue("claimedAmount", response.claimedAmount.toString(), { shouldValidate: true });
             setIsFetched(true)
-        } catch (error) {
+        } catch {
             setIsFetched(false)
-            toast.error("Error fetching assessment data: " + error);
+            toast.error(t("form.claimNotFound"));
+        } finally {
+            setIsFetching(false);
         }
     }
 
@@ -105,8 +130,38 @@ export default function AssessmentForm() {
         });
     };
 
-    const onSubmit = () => {
-        console.log("Form submitted");
+    const uploadFiles = (files: File[]) => {
+        console.log(files);
+        
+    }
+
+    const onSubmit = async (values: z.infer<typeof newAssessmentSchema>) => {
+        loadingService.show(t("form.submitting"));
+        try {
+            const result = await createAssessment({
+                claimId: values.claimId,
+                claimType: values.claimType as ClaimType,
+                insuredName: values.insuredName,
+                contractNo: values.contractNo,
+                claimedAmount: Number(values.claimedAmount),
+                priority: values.priority,
+                assignedTo: values.assignedTo,
+                deadline: values.deadline,
+                documents: values.files,
+                notes: values.description,
+            });
+
+            if (result.success) {
+                toast.success("Assessment created successfully");
+                router.push("/assessments");
+                router.refresh();
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to create assessment");
+        } finally {
+            loadingService.hide();
+        }
     };
 
     return (
@@ -125,10 +180,11 @@ export default function AssessmentForm() {
                             className="w-full"
                             {...register("claimId")}
                         />
-                        <Button type="button" onClick={handleFetchData} variant="outline" className="border-dashed">
-                            {t("fields.fetch")}
+                        <Button type="button" onClick={handleFetchData} disabled={isFetched || isFetching} variant="outline" className="border-dashed">
+                            {isFetching ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : ''} {t("fields.fetch")}
                         </Button>
                     </div>
+                    {errors.claimId && <p className="text-sm text-destructive">{errors.claimId.message}</p>}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-1 gap-2 flex-col">
@@ -143,6 +199,7 @@ export default function AssessmentForm() {
                             disabled={isFetched}
                             {...register("insuredName")}
                         />
+                        {errors.insuredName && <p className="text-sm text-destructive">{errors.insuredName.message}</p>}
                     </div>
                     <div className="flex flex-1 flex-col gap-2">
                         <label htmlFor="contractNo" className="text-sm font-medium leading-none required">
@@ -156,6 +213,7 @@ export default function AssessmentForm() {
                             disabled={isFetched}
                             {...register("contractNo")}
                         />
+                        {errors.contractNo && <p className="text-sm text-destructive">{errors.contractNo.message}</p>}
                     </div>
                     <div className="flex flex-1 flex-col gap-2">
                         <label htmlFor="claimType" className="text-sm font-medium leading-none required">
@@ -201,7 +259,7 @@ export default function AssessmentForm() {
                                             placeholder={t("fields.claimedAmount")}
                                             onChange={(e) => {
                                                 const rawValue = e.target.value.replace(/\D/g, "");
-                                                field.onChange(rawValue ? Number(rawValue) : "");
+                                                field.onChange(rawValue ? String(rawValue) : "");
                                             }}
                                             disabled={isFetched}
                                         />
@@ -210,6 +268,7 @@ export default function AssessmentForm() {
                                 )
                             }}
                         />
+                        {errors.claimedAmount && <p className="text-sm text-destructive">{errors.claimedAmount.message}</p>}
                     </div>
                 </div>
             </div>
@@ -239,6 +298,7 @@ export default function AssessmentForm() {
                                 </Select>
                             )}
                         />
+                        {errors.priority && <p className="text-sm text-destructive">{errors.priority.message}</p>}
                     </div>
 
                     <div className="flex flex-1 flex-col gap-2">
@@ -261,6 +321,7 @@ export default function AssessmentForm() {
                                 </Select>
                             )}
                         />
+                        {errors.assignedTo && <p className="text-sm text-destructive">{errors.assignedTo.message}</p>}
                     </div>
 
                     <div className="flex flex-1 flex-col gap-2">
@@ -281,7 +342,7 @@ export default function AssessmentForm() {
                                             )}
                                         >
                                             <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {field.value ? format(field.value, "PPP", { locale: vi }) : <span>{t("fields.deadlinePlaceholder")}</span>}
+                                            {field.value ? format(field.value, locale === "vi" ? "dd/MM/yyyy" : "PPP", { locale: dateLocale }) : <span>{t("fields.deadlinePlaceholder")}</span>}
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0" align="start">
@@ -289,11 +350,13 @@ export default function AssessmentForm() {
                                             mode="single"
                                             selected={field.value}
                                             onSelect={field.onChange}
+                                            locale={dateLocale}
                                         />
                                     </PopoverContent>
                                 </Popover>
                             )}
                         />
+                        {errors.deadline && <p className="text-sm text-destructive">{errors.deadline.message}</p>}
                     </div>
 
                     <div className="flex flex-1 flex-col gap-2 md:col-span-2">
@@ -326,46 +389,54 @@ export default function AssessmentForm() {
                         </div>
 
                         {files.length > 0 && (
-                            <div className="flex items-center flex-wrap gap-4 mt-4">
-                                {files.map((file, idx) => {
-                                    const isImage = file.type.startsWith("image/");
-                                    const objectUrl = isImage ? URL.createObjectURL(file) : null;
+                            <>
+                                <div className="flex items-center flex-wrap gap-4 mt-4">
+                                    {files.map((file, idx) => {
+                                        const isImage = file.type.startsWith("image/");
+                                        const objectUrl = isImage ? URL.createObjectURL(file) : null;
 
-                                    return (
-                                        <div key={idx} className="relative w-fit group rounded-md border bg-muted/30 p-2 flex flex-col items-center gap-2">
-                                            {isImage && objectUrl ? (
-                                                <div className="relative rounded overflow-hidden">
-                                                    <Image
-                                                        src={objectUrl}
-                                                        alt={file.name}
-                                                        width={56}
-                                                        height={56}
-                                                        className="object-cover"
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <div className="w-14 h-14 flex items-center justify-center bg-background rounded border">
-                                                    <FileIcon className="h-8 w-8 text-muted-foreground" />
-                                                </div>
-                                            )}
-                                            <span className="text-xs truncate w-full text-center" title={file.name}>
-                                                {file.name}
-                                            </span>
-                                            <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    removeFile(idx);
-                                                }}
-                                                className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
-                                            >
-                                                <X className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                                        return (
+                                            <div key={idx} className="relative w-fit group rounded-md border bg-muted/30 p-2 flex flex-col items-center gap-2">
+                                                {isImage && objectUrl ? (
+                                                    <div className="relative rounded overflow-hidden">
+                                                        <Image
+                                                            src={objectUrl}
+                                                            alt={file.name}
+                                                            width={56}
+                                                            height={56}
+                                                            className="object-cover w-14 h-14"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div className="w-14 h-14 flex items-center justify-center bg-background rounded border">
+                                                        <FileIcon className="h-8 w-8 text-muted-foreground" />
+                                                    </div>
+                                                )}
+                                                <span className="text-xs truncate w-full text-center" title={file.name}>
+                                                    {file.name}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        removeFile(idx);
+                                                    }}
+                                                    className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                                                >
+                                                    <X className="h-3 w-3" />
+                                                </button>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <Button type="button" variant="outline" className="border-dashed h-14" onClick={() => uploadFiles(files)}>
+                                    <Upload className="h-4 w-4 mr-2" />
+                                    <span>{t("fields.upload")}</span>
+                                </Button>
+                            </>
                         )}
+
+                        {errors.files && <p className="text-sm text-destructive">{errors.files.message}</p>}
                     </div>
 
                     <div className="flex flex-1 flex-col gap-2 md:col-span-2">
@@ -376,6 +447,7 @@ export default function AssessmentForm() {
                             id="notes"
                             placeholder={t("fields.notesPlaceholder")}
                             className="resize-none min-h-[100px]"
+                            {...register("description")}
                         />
                     </div>
                 </div>
@@ -385,7 +457,7 @@ export default function AssessmentForm() {
                 <Button variant="outline" asChild>
                     <Link href="/assessments">{t("actions.cancel")}</Link>
                 </Button>
-                <Button type="button">{t("actions.submit")}</Button>
+                <Button type="submit">{t("actions.submit")}</Button>
             </div>
         </form>
     );
