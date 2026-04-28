@@ -208,7 +208,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/src/components/ui/dropdown-menu"
-import { MoreHorizontal, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown } from "lucide-react"
+import { MoreHorizontal, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown, Loader2 } from "lucide-react"
 import { Button } from "@/src/components/ui/button"
 import {
   Dialog,
@@ -235,6 +235,7 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentSelectedStatus, setCurrentSelectedStatus] = useState<AssessmentStatus>(assessment.status)
   const [message, setMessage] = useState<string>("")
+  const [assessmentLoading, setAssessmentLoading] = useState<boolean>(false)
 
   const handleViewDetails = (currentStatus: AssessmentStatus) => {
     setIsDialogOpen(true)
@@ -243,24 +244,28 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
 
   const handleStartAssessment = async () => {
     if (!message.trim()) {
-      toast.warning("Please enter a message.");
+      toast.warning(t("toasts.messageRequired"));
       return;
     }
+    setAssessmentLoading(true);
     try {
       const res = await updateAssessment(assessment.id, currentSelectedStatus, message);
       if (res.success) {
-        toast.success("Assessment updated successfully");
+        toast.success(t("toasts.updateSuccess", { id: assessment.id }));
         setIsDialogOpen(false)
         setCurrentSelectedStatus(assessment.status)
         setMessage("")
         router.refresh();
       }
     } catch {
-      toast.error("Failed to update assessment");
+      toast.error(t("toasts.updateError", { id: assessment.id }));
+    } finally {
+      setAssessmentLoading(false);
     }
   }
 
   const handleCloseDialog = (open: boolean) => {
+    if (assessmentLoading) return;
     setIsDialogOpen(open)
     if (!open) {
       setMessage("")
@@ -302,7 +307,12 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DialogContent className="max-w-2xl">
+      <DialogContent 
+        className="max-w-2xl" 
+        showCloseButton={!assessmentLoading}
+        onPointerDownOutside={(e) => { if (assessmentLoading) e.preventDefault(); }}
+        onEscapeKeyDown={(e) => { if (assessmentLoading) e.preventDefault(); }}
+      >
         <DialogHeader>
           <DialogTitle>{tDetails("title")}</DialogTitle>
           <DialogDescription>
@@ -322,8 +332,11 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
         </div>
 
         <DialogFooter>
-          <Button onClick={() => handleCloseDialog(false)} variant="outline">{tDetails("close")}</Button>
-          <Button onClick={handleStartAssessment}>{tDetails("startAssessment")}</Button>
+          <Button disabled={assessmentLoading} onClick={() => handleCloseDialog(false)} variant="outline">{tDetails("close")}</Button>
+          <Button onClick={handleStartAssessment} disabled={assessmentLoading}>
+            {assessmentLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {tDetails("startAssessment")}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

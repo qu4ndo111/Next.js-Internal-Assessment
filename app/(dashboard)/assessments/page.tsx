@@ -35,7 +35,9 @@ export default async function AssessmentsPage({ searchParams }: PageProps) {
       </div>
 
       <div className="flex items-center justify-between gap-4">
-        <AssessmentFilter />
+        <Suspense fallback={<div className="h-10 w-full animate-pulse bg-muted rounded-md" />}>
+          <AssessmentFilter />
+        </Suspense>
       </div>
       <Suspense key={`${params.q}-${params.status}-${params.type}`} fallback={<TableSkeleton />}>
         <AssessmentTableContainer searchParams={searchParams} />

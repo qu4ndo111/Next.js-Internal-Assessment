@@ -103,6 +103,7 @@ export async function updateAssessment(id: string, status: AssessmentStatus, not
       const diffTime = Math.abs(now.getTime() - submittedAt.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       assessment.processingDays = diffDays;
+      assessment.assessedAmount = assessment.claimedAmount;
     } else {
       assessment.completedAt = null;
       assessment.processingDays = null;

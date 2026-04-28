@@ -166,7 +166,13 @@
       "internalNotes": "GHI CHÚ NỘI BỘ",
       "noNotes": "Không có ghi chú.",
       "close": "Đóng",
-      "startAssessment": "Bắt đầu thẩm định"
+      "startAssessment": "Bắt đầu thẩm định",
+      "uploadedAt": "Tải lên lúc"
+    },
+    "toasts": {
+      "updateSuccess": "Cập nhật hồ sơ {id} thành công",
+      "updateError": "Cập nhật hồ sơ {id} thất bại",
+      "messageRequired": "Vui lòng nhập ghi chú hoặc lý do"
     }
   },
   "src": {

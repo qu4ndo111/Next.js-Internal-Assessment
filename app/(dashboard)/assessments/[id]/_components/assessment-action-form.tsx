@@ -19,17 +19,17 @@ export default function AssessmentActionForm(props: Assessment) {
 
     const update = async (status: AssessmentStatus) => {
         if (!message.trim()) {
-            toast.warning("Please enter a message.");
+            toast.warning(t("toasts.messageRequired"));
             return;
         }
         try{
             const res = await updateAssessment(props.id, status, message);
             if(res.success) {
-                toast.success("Assessment updated successfully");
+                toast.success(t("toasts.updateSuccess", { id: props.id }));
                 router.push("/assessments");
             }
         }catch {
-            toast.error("Failed to update assessment");
+            toast.error(t("toasts.updateError", { id: props.id }));
         }
     }
 

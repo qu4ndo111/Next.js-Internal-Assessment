@@ -165,7 +165,13 @@
       "internalNotes": "INTERNAL NOTES",
       "noNotes": "No notes.",
       "close": "Close",
-      "startAssessment": "Start Assessment"
+      "startAssessment": "Start Assessment",
+      "uploadedAt": "Uploaded at"
+    },
+    "toasts": {
+      "updateSuccess": "Assessment {id} updated successfully",
+      "updateError": "Failed to update assessment {id}",
+      "messageRequired": "Please enter a message or reason"
     }
   },
   "src": {

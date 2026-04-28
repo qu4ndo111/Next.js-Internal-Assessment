@@ -141,7 +141,7 @@ export default async function AssessmentDetailPage({ params }: PageProps) {
                         </div>
                         <div>
                           <p className="text-sm font-medium group-hover:text-primary transition-colors cursor-pointer">{doc.name}</p>
-                          <p className="text-xs text-muted-foreground">Tải lên lúc {new Date(doc.uploadedAt).toLocaleDateString()}</p>
+                          <p className="text-xs text-muted-foreground">{tDetails("uploadedAt")} {new Date(doc.uploadedAt).toLocaleDateString()}</p>
                         </div>
                       </div>
                       <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary">
@@ -200,21 +200,17 @@ export default async function AssessmentDetailPage({ params }: PageProps) {
                   </div>
                 )}
 
-                {assessment.reviewNote || assessment.rejectionReason && (
+                {assessment.rejectionReason && assessment.status === "REJECTED" && (
                   <div className="bg-background/50 p-3 rounded-lg border border-red-500/10">
-                    {
-                      assessment.status === "REJECTED" ? (
-                        <>
-                          <p className="text-xs text-muted-foreground uppercase font-semibold">Rejection Reason</p>
-                          <p className="text-sm text-red-600 font-medium">{assessment.rejectionReason}</p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-xs text-muted-foreground uppercase font-semibold">Review Note</p>
-                          <p className="text-sm text-green-600 font-medium">{assessment.reviewNote}</p>
-                        </>
-                      )
-                    }
+                    <p className="text-xs text-muted-foreground uppercase font-semibold">Rejection Reason</p>
+                    <p className="text-sm text-red-600 font-medium">{assessment.rejectionReason}</p>
+                  </div>
+                )}
+
+                {assessment.status === "APPROVED" && assessment.reviewNote && (
+                  <div className="bg-background/50 p-3 rounded-lg border border-green-500/10">
+                    <p className="text-xs text-muted-foreground uppercase font-semibold">Review Note</p>
+                    <p className="text-sm text-green-600 font-medium">{assessment.reviewNote}</p>
                   </div>
                 )}
 
