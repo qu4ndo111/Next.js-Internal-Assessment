@@ -1,9 +1,11 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Assessment } from "@/src/types/assessment"
+import { Assessment, AssessmentStatus } from "@/src/types/assessment"
 import { cn } from "@/lib/utils"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
+import { vi, enUS } from "date-fns/locale";
+import { format } from "date-fns";
 
 export const columns: ColumnDef<Assessment>[] = [
   {
@@ -12,7 +14,7 @@ export const columns: ColumnDef<Assessment>[] = [
       const t = useTranslations("Assessments.columns")
       return <>{t("id")}</>
     },
-    cell: ({ row }) => <span className="font-mono font-medium">{row.getValue("id")}</span>
+    cell: ({ row }) => <Link href={`/assessments/${row.getValue("id")}`} className="font-mono underline font-medium hover:text-blue-500">{row.getValue("id")}</Link>
   },
   {
     accessorKey: "insuredName",
@@ -39,9 +41,26 @@ export const columns: ColumnDef<Assessment>[] = [
   },
   {
     accessorKey: "priority",
-    header: function Header() {
+    header: function Header({ column }) {
       const t = useTranslations("Assessments.columns")
-      return <>{t("priority")}</>
+      return (
+        <div className="flex items-center gap-1">
+          {t("priority")}
+          {column.getCanSort() && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              {column.getIsSorted() === "asc" ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+        </div>
+      )
     },
     cell: function Cell({ row }) {
       const t = useTranslations("Assessments.priority")
@@ -85,10 +104,73 @@ export const columns: ColumnDef<Assessment>[] = [
     }
   },
   {
-    accessorKey: "claimedAmount",
+    accessorKey: "assignedTo",
     header: function Header() {
       const t = useTranslations("Assessments.columns")
-      return <div className="text-right">{t("claimedAmount")}</div>
+      return <>{t("assignedTo")}</>
+    },
+    cell: function Cell({ row }) {
+      const assignedTo = row.getValue("assignedTo") as string
+      return (
+        <span className="text-sm font-medium">{assignedTo}</span>
+      )
+    }
+  },
+  {
+    accessorKey: "submittedAt",
+    header: function Header({ column }) {
+      const t = useTranslations("Assessments.columns")
+      return (
+        <div className="flex items-center gap-1">
+          {t("submittedAt")}
+          {column.getCanSort() && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              {column.getIsSorted() === "asc" ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+        </div>
+      )
+    },
+    cell: function Cell({ row }) {
+      const submittedAt = row.getValue("submittedAt") as string
+      const locale = useLocale();
+      const dateLocale = locale === "vi" ? vi : enUS;
+
+      return (
+        <span className="text-sm font-medium">{format(new Date(submittedAt), locale === "vi" ? "dd/MM/yyyy" : "PPP", { locale: dateLocale })}</span>
+      )
+    }
+  },
+  {
+    accessorKey: "claimedAmount",
+    header: function Header({ column }) {
+      const t = useTranslations("Assessments.columns")
+      return (
+        <div className="flex items-center justify-end gap-1">
+          {t("claimedAmount")}
+          {column.getCanSort() && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+              {column.getIsSorted() === "asc" ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+        </div>
+      )
     },
     cell: function Cell({ row }) {
       const amount = parseFloat(row.getValue("claimedAmount"))
@@ -103,6 +185,11 @@ export const columns: ColumnDef<Assessment>[] = [
     id: "actions",
     cell: ({ row }) => {
       const assessment = row.original
+      const notAllowed = ["APPROVED", "REJECTED", "PARTIALLY_APPROVED"]
+
+      if (notAllowed.includes(assessment.status)) {
+        return <></>
+      }
 
       return (
         <div className="text-right">
@@ -121,7 +208,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/src/components/ui/dropdown-menu"
-import { MoreHorizontal, Eye, CheckCircle, XCircle, Clock } from "lucide-react"
+import { MoreHorizontal, CheckCircle, XCircle, Clock, ChevronUp, ChevronDown } from "lucide-react"
 import { Button } from "@/src/components/ui/button"
 import {
   Dialog,
@@ -133,25 +220,52 @@ import {
 } from "@/src/components/ui/dialog"
 import { useState } from "react"
 import { toast } from "sonner"
+import Link from "next/link"
+import { Textarea } from "@/src/components/ui/textarea"
+import { updateAssessment } from "@/src/services/assessment"
+import { useRouter } from "next/navigation"
 
 function AssessmentActions({ assessment }: { assessment: Assessment }) {
   const tActions = useTranslations("Assessments.actions")
   const tDetails = useTranslations("Assessments.details")
-  const tClaimType = useTranslations("Assessments.claimType")
-  const tPriority = useTranslations("Assessments.priority")
+  const t = useTranslations("Assessments")
+
+  const router = useRouter();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [currentSelectedStatus, setCurrentSelectedStatus] = useState<AssessmentStatus>(assessment.status)
+  const [message, setMessage] = useState<string>("")
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (currentStatus: AssessmentStatus) => {
     setIsDialogOpen(true)
+    setCurrentSelectedStatus(currentStatus)
   }
 
-  const handleStartAssessment = () => {
-    setIsDialogOpen(false)
+  const handleStartAssessment = async () => {
+    if (!message.trim()) {
+      toast.warning("Please enter a message.");
+      return;
+    }
+    try {
+      const res = await updateAssessment(assessment.id, currentSelectedStatus, message);
+      if (res.success) {
+        toast.success("Assessment updated successfully");
+        setIsDialogOpen(false)
+        setCurrentSelectedStatus(assessment.status)
+        setMessage("")
+        router.refresh();
+      }
+    } catch {
+      toast.error("Failed to update assessment");
+    }
   }
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false)
+  const handleCloseDialog = (open: boolean) => {
+    setIsDialogOpen(open)
+    if (!open) {
+      setMessage("")
+      setCurrentSelectedStatus(assessment.status)
+    }
   }
 
   return (
@@ -166,20 +280,22 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
         <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuLabel>{tActions("title")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleViewDetails} className="cursor-pointer">
-            <Eye className="mr-2 h-4 w-4" />
-            {tActions("viewDetails")}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => toast.success(tActions('quickApprove'))} className="text-green-600 cursor-pointer">
-            <CheckCircle className="mr-2 h-4 w-4" />
-            {tActions("quickApprove")}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => toast.success(tActions('requestInfo'))} className="text-purple-600 cursor-pointer">
-            <Clock className="mr-2 h-4 w-4" />
-            {tActions("requestInfo")}
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => toast.error(tActions('reject'))} className="text-red-600 cursor-pointer">
+          {
+            assessment.status !== "ADDITIONAL_INFO_REQUESTED" ? (
+              <>
+                <DropdownMenuItem onClick={() => handleViewDetails('APPROVED')} className="text-green-600 cursor-pointer">
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  {tActions("quickApprove")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleViewDetails('PENDING')} className="text-purple-600 cursor-pointer">
+                  <Clock className="mr-2 h-4 w-4" />
+                  {tActions("requestInfo")}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            ) : null
+          }
+          <DropdownMenuItem onClick={() => handleViewDetails("REJECTED")} className="text-red-600 cursor-pointer">
             <XCircle className="mr-2 h-4 w-4" />
             {tActions("reject")}
           </DropdownMenuItem>
@@ -194,33 +310,8 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-4 py-4">
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{tDetails("customer")}</p>
-            <p className="text-sm font-semibold">{assessment.insuredName}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{tDetails("contractNo")}</p>
-            <p className="text-sm font-mono">{assessment.contractNo}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{tDetails("claimType")}</p>
-            <p className="text-sm">{tClaimType(assessment.claimType)}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{tDetails("priority")}</p>
-            <p className="text-sm">{tPriority(assessment.priority)}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{tDetails("claimedAmount")}</p>
-            <p className="text-sm font-semibold text-primary">
-              {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(assessment.claimedAmount)}
-            </p>
-          </div>
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">{tDetails("assessor")}</p>
-            <p className="text-sm">{assessment.assignedTo}</p>
-          </div>
+        <div >
+          <Textarea id="reviewNote" value={message} onChange={(e) => setMessage(e.target.value)} rows={4} className="w-full border rounded-md p-2 text-sm" placeholder={t("quickReview.reviewNotePlaceholder")} />
         </div>
 
         <div className="space-y-2 border-t pt-4">
@@ -231,7 +322,7 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
         </div>
 
         <DialogFooter>
-          <Button onClick={handleCloseDialog} variant="outline">{tDetails("close")}</Button>
+          <Button onClick={() => handleCloseDialog(false)} variant="outline">{tDetails("close")}</Button>
           <Button onClick={handleStartAssessment}>{tDetails("startAssessment")}</Button>
         </DialogFooter>
       </DialogContent>

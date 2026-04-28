@@ -99,6 +99,10 @@
       "statusPlaceholder": "Chọn trạng thái",
       "typeLabel": "Loại hình bồi thường",
       "typePlaceholder": "Chọn loại bồi thường",
+      "dateRangeLabel": "Khoảng thời gian",
+      "selectDateRange": "Chọn khoảng thời gian...",
+      "assignedToLabel": "Thẩm định viên",
+      "assignedToPlaceholder": "Chọn người xử lý",
       "clear": "Xóa",
       "apply": "Áp dụng"
     },
@@ -132,7 +136,15 @@
       "priority": "Ưu tiên",
       "status": "Trạng thái",
       "claimedAmount": "Số tiền yêu cầu",
-      "actions": "Thao tác"
+      "actions": "Thao tác",
+      "submittedAt": "Ngày tạo",
+      "assignedTo": "Người xử lý"
+    },
+    "quickReview": {
+      "title": "Duyệt nhanh",
+      "description": "Xử lý hồ sơ thẩm định này",
+      "reviewNote": "Ghi chú phê duyệt",
+      "reviewNotePlaceholder": "Nhập ghi chú hoặc lý do từ chối..."
     },
     "actions": {
       "title": "Thao tác",
@@ -149,6 +161,7 @@
       "claimType": "LOẠI BỒI THƯỜNG",
       "priority": "MỨC ĐỘ ƯU TIÊN",
       "claimedAmount": "SỐ TIỀN YÊU CẦU",
+      "assessedAmount": "SỐ TIỀN DUYỆT",
       "assessor": "NGƯỜI THẨM ĐỊNH",
       "internalNotes": "GHI CHÚ NỘI BỘ",
       "noNotes": "Không có ghi chú.",

@@ -99,6 +99,10 @@
       "statusPlaceholder": "Select status",
       "typeLabel": "Compensation Type",
       "typePlaceholder": "Select type",
+      "dateRangeLabel": "Date Range",
+      "selectDateRange": "Select date range...",
+      "assignedToLabel": "Assigned To",
+      "assignedToPlaceholder": "Select assessor",
       "clear": "Clear",
       "apply": "Apply"
     },
@@ -132,7 +136,15 @@
       "priority": "Priority",
       "status": "Status",
       "claimedAmount": "Claimed Amount",
-      "actions": "Actions"
+      "actions": "Actions",
+      "submittedAt": "Submitted At",
+      "assignedTo": "Assigned To"
+    },
+    "quickReview": {
+      "title": "Quick Review",
+      "description": "Process this assessment",
+      "reviewNote": "Review Note",
+      "reviewNotePlaceholder": "Enter your notes or reason here..."
     },
     "actions": {
       "title": "Actions",

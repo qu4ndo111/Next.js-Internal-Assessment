@@ -36,6 +36,7 @@ export interface Assessment {
   rejectionReason: string | null;
   documents: AssessmentDocument[];
   notes: string;
+  reviewNote?: string;
 }
 
 export interface CreateAssessmentInput {

@@ -14,6 +14,9 @@ export default async function AssessmentTableContainer({ searchParams }: PagePro
         status: params.status as string,
         type: params.type as string,
         search: params.q as string,
+        from: params.from as string,
+        to: params.to as string,
+        assignedTo: params.assignedTo as string,
     });
 
     return (

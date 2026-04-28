@@ -125,6 +125,10 @@
   }
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

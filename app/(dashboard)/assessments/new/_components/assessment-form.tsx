@@ -27,6 +27,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { ClaimType } from "@/src/types/assessment";
 
+type TFunction = ReturnType<typeof useTranslations<"Assessments.create">>;
+
+const getAssessmentSchema = (t: TFunction) => z.object({
+    claimId: z.string().min(1, t("form.claimIdRequired")),
+    insuredName: z.string().min(1, t("form.insuredNameRequired")),
+    contractNo: z.string().min(1, t("form.contractNoRequired")),
+    claimType: z.string().min(1, t("form.claimTypeRequired")),
+    claimedAmount: z.string().min(1, t("form.claimedAmountRequired")).refine(val => !isNaN(Number(val)) && Number(val) > 0, t("form.claimedAmountRequired")),
+    deadline: z.date(),
+    description: z.string(),
+    files: z.array(z.instanceof(File)),
+    priority: z.enum(["HIGH", "MEDIUM", "LOW", "URGENT"]),
+    assignedTo: z.string().min(1, t("form.assignedToRequired")),
+})
+
 export default function AssessmentForm() {
     const t = useTranslations("Assessments.create");
     const tAssessments = useTranslations("Assessments");
@@ -40,18 +55,7 @@ export default function AssessmentForm() {
     const [isFetching, setIsFetching] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const newAssessmentSchema = z.object({
-        claimId: z.string().min(1, t("form.claimIdRequired")),
-        insuredName: z.string().min(1, t("form.insuredNameRequired")),
-        contractNo: z.string().min(1, t("form.contractNoRequired")),
-        claimType: z.string().min(1, t("form.claimTypeRequired")),
-        claimedAmount: z.string().min(1, t("form.claimedAmountRequired")),
-        deadline: z.date(),
-        description: z.string(),
-        files: z.array(z.instanceof(File)),
-        priority: z.enum(["HIGH", "MEDIUM", "LOW", "URGENT"]),
-        assignedTo: z.string().min(1, t("form.assignedToRequired")),
-    })
+    const newAssessmentSchema = getAssessmentSchema(t)
 
     const { register, handleSubmit, setValue, watch, control, formState: { errors } } = useForm<z.infer<typeof newAssessmentSchema>>({
         resolver: zodResolver(newAssessmentSchema),
@@ -70,9 +74,9 @@ export default function AssessmentForm() {
     });
 
     const handleFetchData = async () => {
-        setIsFetching(true);
         const claimId = watch("claimId")
         if (!claimId) return;
+        setIsFetching(true);
 
         try {
             const response = await getClaimById(claimId);
@@ -107,7 +111,11 @@ export default function AssessmentForm() {
         setIsDragging(false);
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
             const newFiles = Array.from(e.dataTransfer.files);
-            setFiles(prev => [...prev, ...newFiles]);
+            setFiles(prev => {
+                const updated = [...prev, ...newFiles];
+                setValue("files", updated, { shouldValidate: true })
+                return updated;
+            });
         }
     };
 
@@ -132,7 +140,7 @@ export default function AssessmentForm() {
 
     const uploadFiles = (files: File[]) => {
         console.log(files);
-        
+
     }
 
     const onSubmit = async (values: z.infer<typeof newAssessmentSchema>) => {
@@ -364,7 +372,6 @@ export default function AssessmentForm() {
                             {t("fields.documents")}
                         </label>
 
-                        {/* Drag and Drop Zone */}
                         <div
                             className={cn(
                                 "border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-colors cursor-pointer",

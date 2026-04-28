@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { FAKE_ASSESSMENTS } from "../data/assessments";
-import { Assessment, CreateAssessmentInput } from "../types/assessment";
+import { Assessment, AssessmentStatus, CreateAssessmentInput } from "../types/assessment";
 
-export async function getAssessments(filters?: { status?: string; type?: string; search?: string }): Promise<Assessment[]> {
+export async function getAssessments(filters?: { status?: string; type?: string; search?: string; from?: string; to?: string, assignedTo?: string }): Promise<Assessment[]> {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   let data = [...FAKE_ASSESSMENTS];
@@ -22,7 +22,16 @@ export async function getAssessments(filters?: { status?: string; type?: string;
       item.insuredName.toLowerCase().includes(s)
     );
   }
-
+  if (filters?.from && filters?.to) {
+    const from = new Date(filters!.from!);
+    const to = new Date(filters!.to!);
+    data = data.filter((item) =>
+      new Date(item.submittedAt).getTime() >= from.getTime() && new Date(item.submittedAt).getTime() <= to.getTime()
+    );
+  }
+  if (filters?.assignedTo) {
+    data = data.filter((item) => item.assignedTo === filters.assignedTo);
+  }
   return data;
 }
 
@@ -63,6 +72,54 @@ export async function createAssessment(data: CreateAssessmentInput) {
   return {
     success: true,
     data: body,
+  };
+}
+
+export async function updateAssessment(id: string, status: AssessmentStatus, notes: string, assessedAmount?: number) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const index = FAKE_ASSESSMENTS.findIndex((item) => item.id === id);
+  if (index !== -1) {
+    const assessment = FAKE_ASSESSMENTS[index];
+    assessment.status = status;
+    
+    if (status === "REJECTED") {
+      assessment.rejectionReason = notes;
+      assessment.reviewNote = undefined;
+    } else {
+      assessment.reviewNote = notes;
+      assessment.rejectionReason = null;
+    }
+
+    if (assessedAmount !== undefined) {
+      assessment.assessedAmount = assessedAmount;
+    }
+
+    if (["APPROVED", "REJECTED", "PARTIALLY_APPROVED"].includes(status)) {
+      const now = new Date();
+      assessment.completedAt = now.toISOString();
+      
+      const submittedAt = new Date(assessment.submittedAt);
+      const diffTime = Math.abs(now.getTime() - submittedAt.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      assessment.processingDays = diffDays;
+    } else {
+      assessment.completedAt = null;
+      assessment.processingDays = null;
+    }
+
+    revalidatePath("/assessments");
+    revalidatePath(`/assessments/${id}`);
+
+    return {
+      success: true,
+      data: assessment,
+    };
+  }
+
+  return {
+    success: false,
+    message: "Assessment not found",
   };
 }
 
