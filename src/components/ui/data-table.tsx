@@ -38,48 +38,51 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const table = useReactTable({
     columns,
     data,
-    state: {
-      sorting,
-    },
+    state: { sorting },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 10,
-      },
-    },
+    initialState: { pagination: { pageSize: 10 } },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
   })
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-md border">
+    <div className="space-y-0">
+      {/* Table */}
+      <div className="overflow-x-auto">
         <Table>
-          <TableHeader className="bg-muted/50">
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  )
-                })}
+              <TableRow
+                key={headerGroup.id}
+                className="bg-muted/60 hover:bg-muted/60 border-b-2"
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="h-11 px-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+              table.getRowModel().rows.map((row, rowIndex) => (
+                <TableRow
+                  key={row.id}
+                  className={
+                    rowIndex % 2 === 0
+                      ? "border-b border-border/50 hover:bg-muted/30 transition-colors"
+                      : "border-b border-border/50 bg-muted/20 hover:bg-muted/40 transition-colors"
+                  }
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-3">
+                    <TableCell key={cell.id} className="px-4 py-3">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -87,7 +90,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length} className="h-32 text-center text-muted-foreground">
                   {t("noData")}
                 </TableCell>
               </TableRow>
@@ -96,71 +99,86 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </Table>
       </div>
 
-      <div className="flex items-center justify-between px-2 py-1">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {t("total")} {table.getFilteredRowModel().rows.length} {t("records")}.
+      {/* Pagination Footer */}
+      <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/30">
+        {/* Row count badge */}
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-foreground">
+            {table.getFilteredRowModel().rows.length}
+          </span>
+          <span>{t("records")}</span>
         </div>
-        <div className="flex items-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">{t("rowsPerPage")}</p>
+
+        <div className="flex items-center gap-6">
+          {/* Rows per page */}
+          <div className="flex items-center gap-2">
+            <p className="text-xs text-muted-foreground font-medium">{t("rowsPerPage")}</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
-              onValueChange={(value) => {
-                table.setPageSize(Number(value))
-              }}
+              onValueChange={(value) => table.setPageSize(Number(value))}
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className="h-7 w-[60px] text-xs">
                 <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
               <SelectContent side="top" position="popper">
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                {[10, 20, 30, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`} className="text-xs">
                     {pageSize}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-fit items-center justify-center text-sm font-medium gap-1">
-            {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")} {" "}
-            {table.getPageCount()}
+
+          {/* Page indicator */}
+          <div className="text-xs font-medium text-muted-foreground">
+            {t("page")}{" "}
+            <span className="text-foreground">{table.getState().pagination.pageIndex + 1}</span>
+            {" "}/{" "}
+            <span className="text-foreground">{table.getPageCount()}</span>
           </div>
-          <div className="flex items-center space-x-2">
+
+          {/* Navigation */}
+          <div className="flex items-center gap-1">
             <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 hidden lg:flex"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
-              <ChevronsLeft className="h-4 w-4" />
+              <span className="sr-only">First page</span>
+              <ChevronsLeft className="h-3.5 w-3.5" />
             </Button>
             <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Previous</span>
+              <ChevronLeft className="h-3.5 w-3.5" />
             </Button>
             <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRight className="h-4 w-4" />
+              <span className="sr-only">Next</span>
+              <ChevronRight className="h-3.5 w-3.5" />
             </Button>
             <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 hidden lg:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
-              <ChevronsRight className="h-4 w-4" />
+              <span className="sr-only">Last page</span>
+              <ChevronsRight className="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>

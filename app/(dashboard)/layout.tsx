@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { ModeToggle } from "@/src/components/mode-toggle";
 
-import { LayoutDashboard, FileStack, BarChart3, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import { redirect } from 'next/navigation'
 import { cookies } from "next/headers";
 import { LanguageSwitcher } from "@/src/components/language-switcher";
 
 import { getTranslations } from "next-intl/server";
 import UserMenu from "./_components/user-menu";
+import { SidebarNav } from "./_components/sidebar-nav";
 
 export default async function DashboardLayout({
   children,
@@ -36,41 +37,18 @@ export default async function DashboardLayout({
         </div>
         
         <div className="flex-1 overflow-auto py-4">
-          <nav className="grid items-start px-2 text-sm font-medium lg:px-4 space-y-1">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              {t("kpiOverview")}
-            </Link>
-            
-            <Link
-              href="/assessments"
-              className="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2 text-primary transition-all font-semibold"
-            >
-              <FileStack className="h-4 w-4" />
-              {t("assessments")}
-            </Link>
-            
-            <Link
-              href="/reports"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
-            >
-              <BarChart3 className="h-4 w-4" />
-              {t("reportsAnalytics")}
-            </Link>
-            
-            <div className="my-2 border-t" /> {/* Dải phân cách */}
-
+          <SidebarNav />
+          
+          <div className="px-2 lg:px-4 mt-2">
+            <div className="my-2 border-t" />
             <Link
               href="#"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted text-sm font-medium"
             >
               <Settings className="h-4 w-4" />
               {t("systemSettings")}
             </Link>
-          </nav>
+          </div>
         </div>
       </aside>
 
