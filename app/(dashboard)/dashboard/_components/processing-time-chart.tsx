@@ -11,8 +11,17 @@ import {
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { useTranslations } from "next-intl"
 
-export default function ProcessingTimeChart({ processingTimeData }: { processingTimeData: { month: string, avgDays: number, target: number }[] }) {
+export default function ProcessingTimeChart({ processingTimeData }: { processingTimeData: { month: number, avgDays: number, target: number }[] }) {
     const t = useTranslations("Dashboard");
+    const tCommon = useTranslations("Common");
+
+    if (!processingTimeData || processingTimeData.length === 0) {
+        return (
+            <div className="flex h-[240px] items-center justify-center text-sm text-muted-foreground">
+                {tCommon("noData")}
+            </div>
+        )
+    }
 
     const chartConfig = {
         avgDays: {
@@ -38,6 +47,7 @@ export default function ProcessingTimeChart({ processingTimeData }: { processing
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
+                    tickFormatter={(month) => `${t("month")} ${month}`}
                     tick={{ fontSize: 12 }}
                 />
                 <YAxis

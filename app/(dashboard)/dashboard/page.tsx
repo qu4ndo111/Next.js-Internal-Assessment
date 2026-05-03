@@ -4,27 +4,78 @@ import VolumeChart from "./_components/volume-chart";
 import TypeDistributionChart from "./_components/type-distribution-chart";
 import ProcessingTimeChart from "./_components/processing-time-chart";
 import ApprovalRateChart from "./_components/approval-rate-chart";
-import { Button } from "@/src/components/ui/button";
-import { Download, TrendingUp, TrendingDown, Minus, FileText, Clock, CheckCircle, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, FileText, Clock, CheckCircle, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FAKE_ASSESSMENTS } from "@/src/data/assessments";
 import { getApprovalRate, getDashboardKPIs, getProcessingTime, getTypeDistribution, getVolumeByMonth } from "@/src/services/dashboard";
+import DashboardFilter from "./_components/dashboard-filter";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-export default async function DashboardPage() {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function DashboardPage({ searchParams }: PageProps) {
   const t = await getTranslations("Dashboard");
+  const params = await searchParams;
 
-  const kpiData = await getDashboardKPIs(FAKE_ASSESSMENTS);
-  const volumeData = await getVolumeByMonth(FAKE_ASSESSMENTS);
-  const typeDistributionData = await getTypeDistribution(FAKE_ASSESSMENTS);
-  const processingTimeData = await getProcessingTime(FAKE_ASSESSMENTS);
-  const approvalRateData = await getApprovalRate(FAKE_ASSESSMENTS);
+  const from = params.from as string;
+  const to = params.to as string;
+  const period = params.period as string || "filter6Months";
+  const type = params.type as string || "all";
+
+  if (!from || !to) {
+    const time = new Date();
+    const defaultTo = time.toISOString().split('T')[0];
+    
+    const last6Months = new Date();
+    last6Months.setMonth(time.getMonth() - 5);
+    const defaultFrom = last6Months.toISOString().split('T')[0];
+    
+    redirect(`/dashboard?period=${period}&from=${defaultFrom}&to=${defaultTo}${type !== 'all' ? `&type=${type}` : ''}`);
+  }
+
+  const dateFilteredAssessments = FAKE_ASSESSMENTS.filter(a => {
+    const submitDate = new Date(a.submittedAt).toISOString().split('T')[0];
+    return submitDate >= from && submitDate <= to;
+  });
+
+  const fullyFilteredAssessments = dateFilteredAssessments.filter(a => {
+    if (type !== "all") {
+        return a.claimType === type;
+    }
+    return true;
+  });
+
+
+  const fromDate = new Date(from);
+  const toDate = new Date(to);
+  const diffInMs = toDate.getTime() - fromDate.getTime();
+  
+  const previousToDate = new Date(fromDate.getTime() - (24 * 60 * 60 * 1000));
+  const previousFromDate = new Date(previousToDate.getTime() - diffInMs);
+  
+  const prevFromStr = previousFromDate.toISOString().split('T')[0];
+  const prevToStr = previousToDate.toISOString().split('T')[0];
+
+  const previousFilteredAssessments = FAKE_ASSESSMENTS.filter(a => {
+    const submitDate = new Date(a.submittedAt).toISOString().split('T')[0];
+    return submitDate >= prevFromStr && submitDate <= prevToStr;
+  });
+
+  const kpiData = await getDashboardKPIs(fullyFilteredAssessments, previousFilteredAssessments);
+  const volumeData = await getVolumeByMonth(fullyFilteredAssessments);
+  const typeDistributionData = await getTypeDistribution(dateFilteredAssessments);
+  const processingTimeData = await getProcessingTime(fullyFilteredAssessments);
+  const approvalRateData = await getApprovalRate(fullyFilteredAssessments);
 
   const kpis = [
     {
       label: t("totalAssessments"),
       value: kpiData.totalAssessments,
-      trend: "+12.5%",
-      trendUp: true as boolean | null,
+      trend: kpiData.trends.total.value,
+      trendUp: kpiData.trends.total.isUp,
       icon: FileText,
       iconColor: "text-blue-500",
       iconBg: "bg-blue-500/10",
@@ -32,8 +83,8 @@ export default async function DashboardPage() {
     {
       label: t("inProgress"),
       value: kpiData.inProgress,
-      trend: "+4.1%",
-      trendUp: true as boolean | null,
+      trend: kpiData.trends.inProgress.value,
+      trendUp: kpiData.trends.inProgress.isUp,
       icon: Clock,
       iconColor: "text-orange-500",
       iconBg: "bg-orange-500/10",
@@ -41,8 +92,8 @@ export default async function DashboardPage() {
     {
       label: t("approvalRate"),
       value: kpiData.approvalRate,
-      trend: "-2.3%",
-      trendUp: false as boolean | null,
+      trend: kpiData.trends.approvalRate.value,
+      trendUp: kpiData.trends.approvalRate.isUp,
       icon: CheckCircle,
       iconColor: "text-green-500",
       iconBg: "bg-green-500/10",
@@ -50,50 +101,26 @@ export default async function DashboardPage() {
     {
       label: t("avgProcessingTime"),
       value: kpiData.avgProcessingTime + " " + t("days"),
-      trend: "0%",
-      trendUp: null as boolean | null,
+      trend: kpiData.trends.avgProcessingTime.value,
+      trendUp: kpiData.trends.avgProcessingTime.isUp,
       icon: BarChart3,
       iconColor: "text-purple-500",
       iconBg: "bg-purple-500/10",
     },
   ];
 
-  const periodFilters = [
-    { key: "filter6Months", label: t("filter6Months") },
-    { key: "filterThisYear", label: t("filterThisYear") },
-    { key: "filter12Months", label: t("filter12Months") }
-  ];
-
   return (
     <div className="flex flex-col gap-6 p-6">
 
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{t("kpiOverview")}</h1>
           <p className="text-muted-foreground mt-1 text-sm">{t("kpiOverviewDesc")}</p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="flex items-center rounded-lg border bg-muted/50 p-1 gap-0.5">
-            {periodFilters.map((filter, i) => (
-              <button
-                key={filter.key}
-                className={cn(
-                  "px-3 py-1.5 text-xs font-medium rounded-md transition-all",
-                  i === 0
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {filter.label}
-              </button>
-            ))}
-          </div>
-          <Button variant="outline" size="sm" className="gap-2 h-9">
-            <Download className="h-3.5 w-3.5" />
-            {t("exportReport")}
-          </Button>
-        </div>
+        <Suspense fallback={<div className="h-9 w-[300px] animate-pulse bg-muted/50 rounded-lg" />}>
+          <DashboardFilter />
+        </Suspense>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -60,7 +60,8 @@
     "filter12Months": "12 months",
     "volumeLabel": "Number of profiles:",
     "avgDaysLabel": "Avg processing (days)",
-    "targetLabel": "Target"
+    "targetLabel": "Target",
+    "month": "Month"
   },
   "Assessments": {
     "title": "Assessment Profiles",

@@ -12,7 +12,7 @@ export default async function AuthLayout(
     const token = cookieStore.get("access_token")?.value;
 
     if (token) {
-        redirect("/assessments");
+        redirect("/dashboard");
     }
 
     return (

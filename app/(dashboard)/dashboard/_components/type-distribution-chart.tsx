@@ -19,6 +19,15 @@ const TYPE_COLORS: Record<string, string> = {
 
 export default function TypeDistributionChart({ typeDistributionData }: { typeDistributionData: { type: string, value: number }[] }) {
     const t = useTranslations("Assessments.claimType");
+    const tCommon = useTranslations("Common");
+
+    if (!typeDistributionData || typeDistributionData.length === 0) {
+        return (
+            <div className="flex h-[240px] items-center justify-center text-sm text-muted-foreground">
+                {tCommon("noData")}
+            </div>
+        )
+    }
 
     const chartConfig = Object.fromEntries(
         Object.keys(TYPE_COLORS).map((key) => [

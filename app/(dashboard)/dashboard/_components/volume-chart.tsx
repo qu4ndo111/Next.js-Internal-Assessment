@@ -10,8 +10,17 @@ import {
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { useTranslations } from "next-intl"
 
-export default function VolumeChart({ volumeData }: { volumeData: { month: string, volume: number }[] }) {
+export default function VolumeChart({ volumeData }: { volumeData: { month: number, volume: number }[] }) {
     const t = useTranslations("Dashboard");
+    const tCommon = useTranslations("Common");
+
+    if (!volumeData || volumeData.length === 0) {
+        return (
+            <div className="flex h-[240px] items-center justify-center text-sm text-muted-foreground">
+                {tCommon("noData")}
+            </div>
+        )
+    }
 
     const chartConfig = {
         volume: {
@@ -32,6 +41,7 @@ export default function VolumeChart({ volumeData }: { volumeData: { month: strin
                     dataKey="month"
                     tickLine={false}
                     tickMargin={10}
+                    tickFormatter={(month) => `${t("month")} ${month}`}
                     axisLine={false}
                     tick={{ fontSize: 12 }}
                 />

@@ -60,7 +60,8 @@
     "filter12Months": "12 tháng",
     "volumeLabel": "Số lượng hồ sơ:",
     "avgDaysLabel": "TB xử lý (ngày)",
-    "targetLabel": "Mục tiêu"
+    "targetLabel": "Mục tiêu",
+    "month": "Tháng"
   },
   "Assessments": {
     "title": "Hồ sơ thẩm định",

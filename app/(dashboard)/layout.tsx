@@ -9,6 +9,7 @@ import { LanguageSwitcher } from "@/src/components/language-switcher";
 import { getTranslations } from "next-intl/server";
 import UserMenu from "./_components/user-menu";
 import { SidebarNav } from "./_components/sidebar-nav";
+import { MobileSidebar } from "./_components/mobile-sidebar";
 
 export default async function DashboardLayout({
   children,
@@ -54,10 +55,13 @@ export default async function DashboardLayout({
 
       <div className="flex flex-1 flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:h-[60px] lg:px-6 justify-between">
-          <div className="font-semibold text-lg tracking-tight text-foreground/80">
-            {t("systemTitle")}
+          <div className="flex items-center gap-3">
+            <MobileSidebar systemSettingsLabel={t("systemSettings")} />
+            <span className="font-semibold text-lg tracking-tight text-foreground/80 hidden sm:block">
+              {t("systemTitle")}
+            </span>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <ModeToggle />
             <LanguageSwitcher />

@@ -14,6 +14,15 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function ApprovalRateChart({ approvalRateData }: { approvalRateData: { status: string, value: number }[] }) {
     const t = useTranslations("Assessments.status");
+    const tCommon = useTranslations("Common");
+
+    if (!approvalRateData || approvalRateData.length === 0) {
+        return (
+            <div className="flex h-[240px] items-center justify-center text-sm text-muted-foreground">
+                {tCommon("noData")}
+            </div>
+        )
+    }
 
     const total = approvalRateData.reduce((acc, item) => acc + item.value, 0);
 
@@ -25,7 +34,7 @@ export default function ApprovalRateChart({ approvalRateData }: { approvalRateDa
     }))
 
     return (
-        <div className="flex flex-col gap-3 h-[240px]">
+        <div className="flex flex-col gap-3 h-[260px]">
             <div className="flex-1 w-full min-h-0">
                 <ResponsiveContainer width="100%" height={180}>
                     <RadialBarChart
@@ -53,7 +62,6 @@ export default function ApprovalRateChart({ approvalRateData }: { approvalRateDa
                 </ResponsiveContainer>
             </div>
 
-            {/* Custom legend */}
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 px-1 shrink-0">
                 {chartData.map((item) => (
                     <div key={item.label} className="flex items-center gap-2 min-w-0">
