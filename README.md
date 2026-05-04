@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[English](#english) | [Tiếng Việt](#tiếng-việt)
+
+---
+
+<a id="english"></a>
+# Internal Assessment & Reporting Platform
+
+A simplified, production-ready version of an internal assessment and reporting system built for the AZINSU ecosystem.
+
+## Business Problem
+
+Insurance assessors need a centralized platform to manage, review, and analyze claim assessments efficiently. The system must provide clear data visualization to track key performance indicators (KPIs) and processing times, helping management make data-driven decisions.
+
+## Core Features
+
+- **Assessment Management**: View, filter, and sort a comprehensive list of claim assessments.
+- **Detailed Assessment View**: Inspect individual assessment details, including priority, amounts, and internal notes.
+- **Quick Review**: Quickly approve, reject, or request more information for assessments.
+- **Reporting Dashboard**: Interactive charts and KPI cards visualizing claim volume, types, processing time trends, and approval rates.
+- **Data Export**: Export filtered assessment reports to CSV with localized headers and data mapping.
+- **Internationalization (i18n)**: Full support for English and Vietnamese languages across the entire application.
+- **Responsive UI**: A modern, mobile-friendly interface with sidebar navigation and light/dark mode support.
+
+## Tech Stack
+
+- **Framework**: Next.js (App Router), React
+- **Styling**: Tailwind CSS
+- **Components**: shadcn/ui
+- **Charts**: Recharts
+- **i18n**: next-intl
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<a id="tiếng-việt"></a>
+# Nền tảng Đánh giá & Báo cáo Nội bộ
 
-## Learn More
+Phiên bản tối giản, đạt chuẩn production của hệ thống đánh giá và báo cáo nội bộ được xây dựng cho hệ sinh thái AZINSU.
 
-To learn more about Next.js, take a look at the following resources:
+## Bài toán Nghiệp vụ
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Các chuyên viên thẩm định bảo hiểm cần một nền tảng tập trung để quản lý, phê duyệt và phân tích các hồ sơ bồi thường một cách hiệu quả. Hệ thống phải cung cấp khả năng trực quan hóa dữ liệu rõ ràng để theo dõi các chỉ số hiệu suất chính (KPI) và thời gian xử lý, giúp ban quản lý đưa ra các quyết định dựa trên dữ liệu.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tính năng Cốt lõi
 
-## Deploy on Vercel
+- **Quản lý Hồ sơ**: Xem, lọc và sắp xếp danh sách tổng hợp các hồ sơ thẩm định bồi thường.
+- **Chi tiết Hồ sơ**: Kiểm tra thông tin chi tiết của từng hồ sơ, bao gồm mức độ ưu tiên, số tiền và ghi chú nội bộ.
+- **Duyệt nhanh (Quick Review)**: Dễ dàng phê duyệt, từ chối hoặc yêu cầu bổ sung thông tin cho hồ sơ.
+- **Dashboard Báo cáo**: Biểu đồ tương tác và thẻ KPI trực quan hóa số lượng yêu cầu, loại hình, xu hướng thời gian xử lý và tỷ lệ phê duyệt.
+- **Xuất Dữ liệu**: Xuất báo cáo dữ liệu đã lọc ra file CSV, hỗ trợ tiêu đề và giá trị được dịch sang ngôn ngữ tương ứng.
+- **Đa Ngôn ngữ (i18n)**: Hỗ trợ hoàn chỉnh Tiếng Anh và Tiếng Việt trên toàn bộ ứng dụng.
+- **Giao diện Responsive**: Giao diện hiện đại, thân thiện với thiết bị di động, tích hợp thanh điều hướng (sidebar) và hỗ trợ chế độ Tối/Sáng (Dark mode).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Công nghệ Sử dụng
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Framework**: Next.js (App Router), React
+- **Styling**: Tailwind CSS
+- **Components**: shadcn/ui
+- **Charts**: Recharts
+- **i18n**: next-intl
+
+## Hướng dẫn Cài đặt
+
+Đầu tiên, cài đặt các thư viện:
+
+```bash
+npm install
+```
+
+Sau đó, khởi chạy local server:
+
+```bash
+npm run dev
+```
+
+Mở [http://localhost:3000](http://localhost:3000) trên trình duyệt để xem kết quả.
