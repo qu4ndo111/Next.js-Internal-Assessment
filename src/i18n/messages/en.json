@@ -195,6 +195,15 @@
       "updateSuccess": "Assessment {id} updated successfully",
       "updateError": "Failed to update assessment {id}",
       "messageRequired": "Please enter a message or reason"
+    },
+    "csvHeaders": {
+      "profileId": "Profile ID",
+      "claimId": "Claim ID",
+      "type": "Type",
+      "status": "Status",
+      "claimedAmount": "Claimed Amount",
+      "submittedAt": "Submitted At",
+      "processingDays": "Processing Days"
     }
   },
   "src": {

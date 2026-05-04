@@ -7,9 +7,11 @@ import { Download } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
+import { Assessment } from "@/src/types/assessment";
+
 type PeriodType = "filter6Months" | "filterThisYear" | "filter12Months"
 
-export default function DashboardFilter() {
+export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) {
     const t = useTranslations("Dashboard");
     const tClaimType = useTranslations("Assessments");
     const router = useRouter();
@@ -32,7 +34,7 @@ export default function DashboardFilter() {
         let to = "";
         if (filter === 'filter6Months') {
             const last6Months = new Date()
-            last6Months.setMonth(time.getMonth() - 5);
+            last6Months.setMonth(time.getMonth() - 6);
             from = new Date(last6Months).toISOString().split('T')[0];
             to = time.toISOString().split('T')[0];
         } else if (filter === 'filterThisYear') {
@@ -58,6 +60,43 @@ export default function DashboardFilter() {
             params.set("type", filter);
         }
         router.push(`${pathname}?${params.toString()}`);
+    }
+
+    const handleExport = () => {
+        const tCsv = (key: string) => tClaimType(`csvHeaders.${key}`);
+        
+        const headers = [
+            tCsv("profileId"),
+            tCsv("claimId"),
+            tCsv("type"),
+            tCsv("status"),
+            tCsv("claimedAmount"),
+            tCsv("submittedAt"),
+            tCsv("processingDays")
+        ];
+
+        const csvContent = [
+            headers.join(","),
+            ...data.map(d => [
+                d.id,
+                d.claimId,
+                tClaimType(`claimType.${d.claimType}`),
+                tClaimType(`status.${d.status}`),
+                d.claimedAmount,
+                d.submittedAt,
+                d.processingDays ?? ""
+            ].join(","))
+        ].join("\n");
+        
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `AQ-Portal-Report-${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     return (
@@ -91,7 +130,7 @@ export default function DashboardFilter() {
                   <SelectItem value="DISABILITY">{tClaimType("claimType.DISABILITY")}</SelectItem>
                 </SelectContent>
               </Select>
-            <Button variant="outline" size="sm" className="gap-2 h-9">
+            <Button variant="outline" size="sm" className="gap-2 h-9" onClick={handleExport} disabled={data.length === 0}>
                 <Download className="h-3.5 w-3.5" />
                 {t("exportReport")}
             </Button>

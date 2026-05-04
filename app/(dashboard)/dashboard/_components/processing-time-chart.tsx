@@ -56,7 +56,6 @@ export default function ProcessingTimeChart({ processingTimeData }: { processing
                     tickMargin={8}
                     tick={{ fontSize: 12 }}
                     unit="d"
-                    domain={[0, 8]}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />

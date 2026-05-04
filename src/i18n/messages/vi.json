@@ -196,6 +196,15 @@
       "updateSuccess": "Cập nhật hồ sơ {id} thành công",
       "updateError": "Cập nhật hồ sơ {id} thất bại",
       "messageRequired": "Vui lòng nhập ghi chú hoặc lý do"
+    },
+    "csvHeaders": {
+      "profileId": "Mã hồ sơ",
+      "claimId": "Mã yêu cầu",
+      "type": "Loại",
+      "status": "Trạng thái",
+      "claimedAmount": "Số tiền yêu cầu",
+      "submittedAt": "Ngày tạo",
+      "processingDays": "Số ngày xử lý"
     }
   },
   "src": {

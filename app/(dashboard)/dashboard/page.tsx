@@ -119,7 +119,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         </div>
 
         <Suspense fallback={<div className="h-9 w-[300px] animate-pulse bg-muted/50 rounded-lg" />}>
-          <DashboardFilter />
+          <DashboardFilter data={fullyFilteredAssessments} />
         </Suspense>
       </div>
 
