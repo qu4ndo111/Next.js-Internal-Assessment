@@ -7,6 +7,15 @@
 
 A simplified, production-ready version of an internal assessment and reporting system built for the AZINSU ecosystem.
 
+Live demo: [nextjs-internal-assessment](https://nextjs-internal-assessment.vercel.app/)
+
+Login credentials:
+
+```
+Email:    admin@aq.com
+Password: 123456aA@
+```
+
 ## Business Problem
 
 Insurance assessors need a centralized platform to manage, review, and analyze claim assessments efficiently. The system must provide clear data visualization to track key performance indicators (KPIs) and processing times, helping management make data-driven decisions.
@@ -50,7 +59,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 <a id="tiếng-việt"></a>
 # Nền tảng Đánh giá & Báo cáo Nội bộ
 
-Phiên bản tối giản, đạt chuẩn production của hệ thống đánh giá và báo cáo nội bộ được xây dựng cho hệ sinh thái AZINSU.
+Phiên bản tối giản, đạt chuẩn production của hệ thống đánh giá và báo cáo nội bộ.
+
+Demo trực tuyến: [nextjs-internal-assessment](https://nextjs-internal-assessment.vercel.app/)
+
+Thông tin đăng nhập:
+
+```
+Email:    admin@aq.com
+Password: 123456aA@
+```
 
 ## Bài toán Nghiệp vụ
 
