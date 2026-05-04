@@ -25,6 +25,10 @@ export default function LoginPage() {
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "admin@aq.com",
+            password: "123456aA@",
+        },
     });
 
     const onSubmit = async (data: LoginSchema) => {
