@@ -23,7 +23,7 @@ export async function fakeLogin(formData: LoginSchema) {
       path: "/",
     })
 
-    redirect("/assessments")
+    redirect("/dashboard")
   }
 
   return { error: "Sai email hoặc mật khẩu!" }
