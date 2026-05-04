@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, FileStack, BarChart3, LucideIcon } from "lucide-react";
+import { LayoutDashboard, FileStack, LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface NavItem {
@@ -22,12 +22,7 @@ const navItems: NavItem[] = [
     href: "/assessments",
     labelKey: "assessments",
     icon: FileStack,
-  },
-  {
-    href: "/reports",
-    labelKey: "reportsAnalytics",
-    icon: BarChart3,
-  },
+  }
 ];
 
 export function SidebarNav() {
