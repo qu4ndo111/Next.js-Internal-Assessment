@@ -1,5 +1,5 @@
 "use client"
-
+import { useDispatch } from "react-redux";
 import { ColumnDef } from "@tanstack/react-table"
 import { Assessment, AssessmentStatus } from "@/src/types/assessment"
 import { cn } from "@/lib/utils"
@@ -223,14 +223,13 @@ import { toast } from "sonner"
 import Link from "next/link"
 import { Textarea } from "@/src/components/ui/textarea"
 import { updateAssessment } from "@/src/services/assessment"
-import { useRouter } from "next/navigation"
+import { updateAssessmentStatus } from "@/src/store/features/assessmentsSlice";
 
 function AssessmentActions({ assessment }: { assessment: Assessment }) {
   const tActions = useTranslations("Assessments.actions")
   const tDetails = useTranslations("Assessments.details")
   const t = useTranslations("Assessments")
-
-  const router = useRouter();
+  const dispatch = useDispatch();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentSelectedStatus, setCurrentSelectedStatus] = useState<AssessmentStatus>(assessment.status)
@@ -247,20 +246,33 @@ function AssessmentActions({ assessment }: { assessment: Assessment }) {
       toast.warning(t("toasts.messageRequired"));
       return;
     }
+    const previousStatus = assessment.status;
     setAssessmentLoading(true);
     try {
+      dispatch(updateAssessmentStatus({
+        id: assessment.id,
+        status: currentSelectedStatus,
+        updateMessage: message
+      }))
+      setIsDialogOpen(false);
+
       const res = await updateAssessment(assessment.id, currentSelectedStatus, message);
       if (res.success) {
         toast.success(t("toasts.updateSuccess", { id: assessment.id }));
-        setIsDialogOpen(false)
-        setCurrentSelectedStatus(assessment.status)
-        setMessage("")
-        router.refresh();
+      } else {
+        throw new Error("Update failed")
       }
     } catch {
+      dispatch(updateAssessmentStatus({
+        id: assessment.id,
+        status: previousStatus,
+        updateMessage: ""
+      }))
       toast.error(t("toasts.updateError", { id: assessment.id }));
     } finally {
       setAssessmentLoading(false);
+      setCurrentSelectedStatus(assessment.status)
+      setMessage("")
     }
   }
 
