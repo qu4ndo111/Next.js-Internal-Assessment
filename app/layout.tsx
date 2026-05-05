@@ -2,12 +2,13 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/src/components/theme-provider";
-import {NextIntlClientProvider} from 'next-intl';
-import {getMessages, getTranslations} from 'next-intl/server';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { Toaster } from "sonner";
 import { FullScreenLoader } from "@/src/components/ui/full-screen-loader";
+import { StoreProvider } from "@/src/store/store-provider";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 
 
@@ -59,18 +60,20 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider messages={messages}>
-            {children}
-            <FullScreenLoader />
-            <Toaster position="top-right" richColors/>
-          </NextIntlClientProvider>
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NextIntlClientProvider messages={messages}>
+              {children}
+              <FullScreenLoader />
+              <Toaster position="top-right" richColors />
+            </NextIntlClientProvider>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );

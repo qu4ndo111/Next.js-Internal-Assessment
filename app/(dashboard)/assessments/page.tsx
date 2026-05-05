@@ -39,7 +39,7 @@ export default async function AssessmentsPage({ searchParams }: PageProps) {
           <AssessmentFilter />
         </Suspense>
       </div>
-      <Suspense key={`${params.q}-${params.status}-${params.type}`} fallback={<TableSkeleton />}>
+      <Suspense key={`${params.q}-${params.status}-${params.type}-${params.from}-${params.to}-${params.assignedTo}`} fallback={<TableSkeleton />}>
         <AssessmentTableContainer searchParams={searchParams} />
       </Suspense>
     </div>

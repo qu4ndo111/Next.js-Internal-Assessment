@@ -4,10 +4,12 @@ import { revalidatePath } from "next/cache";
 import { FAKE_ASSESSMENTS } from "../data/assessments";
 import { Assessment, AssessmentStatus, CreateAssessmentInput } from "../types/assessment";
 
+const assessmentsDB = [...FAKE_ASSESSMENTS];
+
 export async function getAssessments(filters?: { status?: string; type?: string; search?: string; from?: string; to?: string, assignedTo?: string }): Promise<Assessment[]> {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
-  let data = [...FAKE_ASSESSMENTS];
+  let data = [...assessmentsDB];
 
   if (filters?.status) {
     data = data.filter((item) => item.status === filters.status);
@@ -23,8 +25,9 @@ export async function getAssessments(filters?: { status?: string; type?: string;
     );
   }
   if (filters?.from && filters?.to) {
-    const from = new Date(filters!.from!);
-    const to = new Date(filters!.to!);
+    const from = new Date(filters.from);
+    const to = new Date(filters.to);
+    to.setHours(23, 59, 59, 999);
     data = data.filter((item) =>
       new Date(item.submittedAt).getTime() >= from.getTime() && new Date(item.submittedAt).getTime() <= to.getTime()
     );
@@ -35,6 +38,10 @@ export async function getAssessments(filters?: { status?: string; type?: string;
   return data;
 }
 
+export async function getAssessmentById(id: string): Promise<Assessment | undefined> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return assessmentsDB.find(item => item.id === id);
+}
 
 export async function createAssessment(data: CreateAssessmentInput) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -65,7 +72,7 @@ export async function createAssessment(data: CreateAssessmentInput) {
     notes: data.notes,
   };
 
-  FAKE_ASSESSMENTS.unshift(body);
+  assessmentsDB.unshift(body);
 
   revalidatePath("/assessments");
 
@@ -78,11 +85,11 @@ export async function createAssessment(data: CreateAssessmentInput) {
 export async function updateAssessment(id: string, status: AssessmentStatus, notes: string, assessedAmount?: number) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const index = FAKE_ASSESSMENTS.findIndex((item) => item.id === id);
+  const index = assessmentsDB.findIndex((item) => item.id === id);
   if (index !== -1) {
-    const assessment = FAKE_ASSESSMENTS[index];
+    const assessment = { ...assessmentsDB[index] };
     assessment.status = status;
-    
+
     if (status === "REJECTED") {
       assessment.rejectionReason = notes;
       assessment.reviewNote = undefined;
@@ -108,6 +115,8 @@ export async function updateAssessment(id: string, status: AssessmentStatus, not
       assessment.completedAt = null;
       assessment.processingDays = null;
     }
+
+    assessmentsDB[index] = { ...assessment };
 
     revalidatePath("/assessments");
     revalidatePath(`/assessments/${id}`);

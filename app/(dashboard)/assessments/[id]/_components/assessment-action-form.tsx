@@ -9,11 +9,12 @@ import { Textarea } from "@/src/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "sonner";
 import { updateAssessment } from "@/src/services/assessment";
-import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { updateAssessmentStatus } from "@/src/store/features/assessmentsSlice";
 
 export default function AssessmentActionForm(props: Assessment) {
     const t = useTranslations("Assessments");
-    const router = useRouter();
+    const dispatch = useDispatch();
 
     const [message, setMessage] = useState<string>("");
 
@@ -22,13 +23,18 @@ export default function AssessmentActionForm(props: Assessment) {
             toast.warning(t("toasts.messageRequired"));
             return;
         }
+        const previousStatus = props.status;
         try{
+            dispatch(updateAssessmentStatus({ id: props.id, status, updateMessage: message }));
+
             const res = await updateAssessment(props.id, status, message);
             if(res.success) {
                 toast.success(t("toasts.updateSuccess", { id: props.id }));
-                router.push("/assessments");
+            } else {
+                throw new Error("failed")
             }
         }catch {
+            dispatch(updateAssessmentStatus({ id: props.id, status: previousStatus, updateMessage: '' }));
             toast.error(t("toasts.updateError", { id: props.id }));
         }
     }
