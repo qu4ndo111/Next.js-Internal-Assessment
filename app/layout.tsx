@@ -26,6 +26,24 @@ export async function generateMetadata() {
   return {
     title: t("systemTitle"),
     description: t("systemTitle"),
+    openGraph: {
+      title: t("systemTitle"),
+      description: t("systemTitle"),
+      images: [
+        {
+          url: "/nextjs.png",
+          width: 1200,
+          height: 630,
+          alt: t("systemTitle"),
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("systemTitle"),
+      description: t("systemTitle"),
+      images: ["/nextjs.png"],
+    },
   };
 }
 
