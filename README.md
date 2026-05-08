@@ -20,22 +20,23 @@ Password: 123456aA@
 
 Insurance assessors need a centralized platform to manage, review, and analyze claim assessments efficiently. The system must provide clear data visualization to track key performance indicators (KPIs) and processing times, helping management make data-driven decisions.
 
-## Core Features
+## What this project demonstrates
 
-- **Assessment Management**: View, filter, and sort a comprehensive list of claim assessments.
-- **Detailed Assessment View**: Inspect individual assessment details, including priority, amounts, and internal notes.
-- **Quick Review**: Quickly approve, reject, or request more information for assessments.
-- **Reporting Dashboard**: Interactive charts and KPI cards visualizing claim volume, types, processing time trends, and approval rates.
+- **Assessment Management**: List view with search, filter by status and priority.
+- **Detailed Assessment View**: Inspect individual assessment details and history.
+- **Quick Review**: Actions to approve, reject, or request more information.
+- **Reporting Dashboard**: Interactive charts (Recharts) and KPI cards visualizing claim volume, types, processing time trends, and approval rates.
 - **Data Export**: Export filtered assessment reports to CSV with localized headers and data mapping.
-- **Internationalization (i18n)**: Full support for English and Vietnamese languages across the entire application.
+- **Internationalization (i18n)**: Full support for English and Vietnamese languages using `next-intl`.
 - **Responsive UI**: A modern, mobile-friendly interface with sidebar navigation and light/dark mode support.
 
 ## Tech Stack
 
-- **Framework**: Next.js (App Router), React
+- **Framework**: Next.js (App Router)
 - **Styling**: Tailwind CSS
 - **Components**: shadcn/ui
 - **Charts**: Recharts
+- **State Management**: Redux Toolkit
 - **i18n**: next-intl
 
 ## Getting Started
@@ -53,6 +54,19 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Project structure
+
+```
+app/                    # App Router routes and layouts
+├── (auth)/             # Authentication (Login)
+└── (dashboard)/        # Main features (Dashboard, Assessments, Reports)
+src/                    # Source code and shared logic
+├── components/         # UI Components (shadcn/ui and shared)
+├── i18n/               # Internationalization configuration
+├── services/           # Data services and mock API
+└── store/              # Redux state management
+```
 
 ---
 
@@ -74,22 +88,23 @@ Password: 123456aA@
 
 Các chuyên viên thẩm định bảo hiểm cần một nền tảng tập trung để quản lý, phê duyệt và phân tích các hồ sơ bồi thường một cách hiệu quả. Hệ thống phải cung cấp khả năng trực quan hóa dữ liệu rõ ràng để theo dõi các chỉ số hiệu suất chính (KPI) và thời gian xử lý, giúp ban quản lý đưa ra các quyết định dựa trên dữ liệu.
 
-## Tính năng Cốt lõi
+## Tính năng
 
-- **Quản lý Hồ sơ**: Xem, lọc và sắp xếp danh sách tổng hợp các hồ sơ thẩm định bồi thường.
-- **Chi tiết Hồ sơ**: Kiểm tra thông tin chi tiết của từng hồ sơ, bao gồm mức độ ưu tiên, số tiền và ghi chú nội bộ.
-- **Duyệt nhanh (Quick Review)**: Dễ dàng phê duyệt, từ chối hoặc yêu cầu bổ sung thông tin cho hồ sơ.
-- **Dashboard Báo cáo**: Biểu đồ tương tác và thẻ KPI trực quan hóa số lượng yêu cầu, loại hình, xu hướng thời gian xử lý và tỷ lệ phê duyệt.
+- **Quản lý Hồ sơ**: Xem danh sách với tìm kiếm, lọc theo trạng thái và mức độ ưu tiên.
+- **Chi tiết Hồ sơ**: Kiểm tra thông tin chi tiết và lịch sử của từng hồ sơ.
+- **Duyệt nhanh (Quick Review)**: Thao tác phê duyệt, từ chối hoặc yêu cầu bổ sung thông tin.
+- **Dashboard Báo cáo**: Biểu đồ tương tác (Recharts) và thẻ KPI trực quan hóa số lượng yêu cầu, loại hình, xu hướng thời gian xử lý và tỷ lệ phê duyệt.
 - **Xuất Dữ liệu**: Xuất báo cáo dữ liệu đã lọc ra file CSV, hỗ trợ tiêu đề và giá trị được dịch sang ngôn ngữ tương ứng.
-- **Đa Ngôn ngữ (i18n)**: Hỗ trợ hoàn chỉnh Tiếng Anh và Tiếng Việt trên toàn bộ ứng dụng.
+- **Đa Ngôn ngữ (i18n)**: Hỗ trợ hoàn chỉnh Tiếng Anh và Tiếng Việt sử dụng `next-intl`.
 - **Giao diện Responsive**: Giao diện hiện đại, thân thiện với thiết bị di động, tích hợp thanh điều hướng (sidebar) và hỗ trợ chế độ Tối/Sáng (Dark mode).
 
 ## Công nghệ Sử dụng
 
-- **Framework**: Next.js (App Router), React
+- **Framework**: Next.js (App Router)
 - **Styling**: Tailwind CSS
 - **Components**: shadcn/ui
 - **Charts**: Recharts
+- **State Management**: Redux Toolkit
 - **i18n**: next-intl
 
 ## Hướng dẫn Cài đặt
@@ -107,3 +122,16 @@ npm run dev
 ```
 
 Mở [http://localhost:3000](http://localhost:3000) trên trình duyệt để xem kết quả.
+
+## Cấu trúc thư mục
+
+```
+app/                    # App Router routes và layouts
+├── (auth)/             # Tính năng xác thực (Đăng nhập)
+└── (dashboard)/        # Tính năng chính (Dashboard, Hồ sơ, Báo cáo)
+src/                    # Mã nguồn và logic dùng chung
+├── components/         # Giao diện UI (shadcn/ui và component dùng chung)
+├── i18n/               # Cấu hình đa ngôn ngữ
+├── services/           # Xử lý dữ liệu và mock API
+└── store/              # Quản lý state bằng Redux
+```
