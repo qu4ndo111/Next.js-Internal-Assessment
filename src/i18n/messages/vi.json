@@ -3,7 +3,10 @@
     "search": "Tìm kiếm...",
     "add": "Thêm mới",
     "filter": "Lọc",
-    "noData": "Không tìm thấy dữ liệu."
+    "noData": "Không tìm thấy dữ liệu.",
+    "errorTitle": "Tải dữ liệu thất bại",
+    "errorDescription": "Đã xảy ra lỗi trong quá trình tải dữ liệu. Vui lòng tải lại trang.",
+    "retry": "Thử lại"
   },
   "Login": {
     "title": "Đăng nhập hệ thống",

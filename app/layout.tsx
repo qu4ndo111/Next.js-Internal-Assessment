@@ -7,6 +7,8 @@ import { getMessages, getTranslations } from 'next-intl/server';
 import { Toaster } from "sonner";
 import { FullScreenLoader } from "@/src/components/ui/full-screen-loader";
 import { StoreProvider } from "@/src/store/store-provider";
+import { ErrorSimulatorProvider } from "@/src/components/error-simulator-provider";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -54,6 +56,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const messages = await getMessages();
+  const cookieStore = await cookies();
+  const simulateError = cookieStore.get("dev_simulate_error")?.value === "1";
 
   return (
     <html lang="en" className={cn("font-sans", inter.variable)} suppressHydrationWarning>
@@ -61,18 +65,20 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StoreProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextIntlClientProvider messages={messages}>
-              {children}
-              <FullScreenLoader />
-              <Toaster position="top-right" richColors />
-            </NextIntlClientProvider>
-          </ThemeProvider>
+          <ErrorSimulatorProvider initialValue={simulateError}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NextIntlClientProvider messages={messages}>
+                {children}
+                <FullScreenLoader />
+                <Toaster position="top-right" richColors />
+              </NextIntlClientProvider>
+            </ThemeProvider>
+          </ErrorSimulatorProvider>
         </StoreProvider>
       </body>
     </html>

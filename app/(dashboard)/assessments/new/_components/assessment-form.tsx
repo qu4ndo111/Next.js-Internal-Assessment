@@ -325,6 +325,7 @@ export default function AssessmentForm() {
                                         <SelectItem value="Trần Thị B">Trần Thị B</SelectItem>
                                         <SelectItem value="Phạm Văn D">Phạm Văn D</SelectItem>
                                         <SelectItem value="Nguyễn Văn F">Nguyễn Văn F</SelectItem>
+                                        <SelectItem value="Lê Hoàng G">Lê Hoàng G</SelectItem>
                                     </SelectContent>
                                 </Select>
                             )}

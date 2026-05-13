@@ -11,6 +11,7 @@ import { getApprovalRate, getDashboardKPIs, getProcessingTime, getTypeDistributi
 import DashboardFilter from "./_components/dashboard-filter";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { ServerErrorState } from "@/src/components/shared/server-error-state";
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -64,11 +65,30 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     return submitDate >= prevFromStr && submitDate <= prevToStr;
   });
 
-  const kpiData = await getDashboardKPIs(fullyFilteredAssessments, previousFilteredAssessments);
-  const volumeData = await getVolumeByMonth(fullyFilteredAssessments);
-  const typeDistributionData = await getTypeDistribution(dateFilteredAssessments);
-  const processingTimeData = await getProcessingTime(fullyFilteredAssessments);
-  const approvalRateData = await getApprovalRate(fullyFilteredAssessments);
+  let kpiData = null
+  let volumeData = null
+  let typeDistributionData = null
+  let processingTimeData = null
+  let approvalRateData = null
+  let error = false
+
+  try {
+    kpiData = await getDashboardKPIs(fullyFilteredAssessments, previousFilteredAssessments);
+    volumeData = await getVolumeByMonth(fullyFilteredAssessments);
+    typeDistributionData = await getTypeDistribution(dateFilteredAssessments);
+    processingTimeData = await getProcessingTime(fullyFilteredAssessments);
+    approvalRateData = await getApprovalRate(fullyFilteredAssessments);
+  } catch {
+    error = true
+  }
+
+  if (error || !kpiData) {
+    return (
+      <div className="p-6">
+        <ServerErrorState />
+      </div>
+    )
+  }
 
   const kpis = [
     {
@@ -168,7 +188,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             <CardDescription>{t("volumeDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="flex-1 pl-2">
-            <VolumeChart volumeData={volumeData} />
+            <VolumeChart volumeData={volumeData!} />
           </CardContent>
         </Card>
 
@@ -178,7 +198,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             <CardDescription>{t("distributionDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="flex-1">
-            <TypeDistributionChart typeDistributionData={typeDistributionData} />
+            <TypeDistributionChart typeDistributionData={typeDistributionData!} />
           </CardContent>
         </Card>
 
@@ -188,7 +208,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             <CardDescription>{t("processingTimeDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="flex-1 pl-2">
-            <ProcessingTimeChart processingTimeData={processingTimeData} />
+            <ProcessingTimeChart processingTimeData={processingTimeData!} />
           </CardContent>
         </Card>
 
@@ -198,7 +218,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             <CardDescription>{t("approvalRateDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="flex-1">
-            <ApprovalRateChart approvalRateData={approvalRateData} />
+            <ApprovalRateChart approvalRateData={approvalRateData!} />
           </CardContent>
         </Card>
 
