@@ -3,7 +3,10 @@
     "search": "Search...",
     "add": "Add New",
     "filter": "Filter",
-    "noData": "No data found."
+    "noData": "No data found.",
+    "errorTitle": "Failed to load data",
+    "errorDescription": "Something went wrong while fetching data. Please refresh the page.",
+    "retry": "Retry"
   },
   "Login": {
     "title": "Sign in to system",

@@ -3,11 +3,15 @@
 import { revalidatePath } from "next/cache";
 import { FAKE_ASSESSMENTS } from "../data/assessments";
 import { Assessment, AssessmentStatus, CreateAssessmentInput } from "../types/assessment";
+import { shouldSimulateError } from "../actions/error-simulator.action";
 
 const assessmentsDB = [...FAKE_ASSESSMENTS];
 
 export async function getAssessments(filters?: { status?: string; type?: string; search?: string; from?: string; to?: string, assignedTo?: string }): Promise<Assessment[]> {
   await new Promise((resolve) => setTimeout(resolve, 500));
+  
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error in getAssessments")
 
   let data = [...assessmentsDB];
 
@@ -40,11 +44,18 @@ export async function getAssessments(filters?: { status?: string; type?: string;
 
 export async function getAssessmentById(id: string): Promise<Assessment | undefined> {
   await new Promise((resolve) => setTimeout(resolve, 500));
+
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error in getAssessmentById")
+
   return assessmentsDB.find(item => item.id === id);
 }
 
 export async function createAssessment(data: CreateAssessmentInput) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error in createAssessment")
 
   const body: Assessment = {
     id: generateNewAssessmentId(),
@@ -84,6 +95,9 @@ export async function createAssessment(data: CreateAssessmentInput) {
 
 export async function updateAssessment(id: string, status: AssessmentStatus, notes: string, assessedAmount?: number) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error in updateAssessment")
 
   const index = assessmentsDB.findIndex((item) => item.id === id);
   if (index !== -1) {
@@ -143,6 +157,9 @@ function generateNewAssessmentId() {
 
 export async function uploadDocuments(files: File[]) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error in uploadDocuments")
 
   const returnData = {
     success: true,

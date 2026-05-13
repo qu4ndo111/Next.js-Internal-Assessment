@@ -10,6 +10,7 @@ import { getTranslations } from "next-intl/server";
 import UserMenu from "./_components/user-menu";
 import { SidebarNav } from "./_components/sidebar-nav";
 import { MobileSidebar } from "./_components/mobile-sidebar";
+import { ErrorSimulator } from "./_components/error";
 
 export default async function DashboardLayout({
   children,
@@ -63,6 +64,7 @@ export default async function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-4">
+            <ErrorSimulator />
             <ModeToggle />
             <LanguageSwitcher />
             <UserMenu />

@@ -1,4 +1,5 @@
 import { Assessment } from "@/src/types/assessment";
+import { shouldSimulateError } from "../actions/error-simulator.action";
 
 function calculateStats(data: Assessment[]) {
     const total = data.length;
@@ -21,6 +22,9 @@ function calculateTrend(current: number, previous: number) {
 }
 
 export async function getDashboardKPIs(data: Assessment[], previousData?: Assessment[]) {
+    const sim = await shouldSimulateError()
+    if (sim) throw new Error("Simulated error in getDashboardKPIs")
+
     const current = calculateStats(data);
     
     const result = {
@@ -68,6 +72,9 @@ export async function getDashboardKPIs(data: Assessment[], previousData?: Assess
 }
 
 export async function getVolumeByMonth(data: Assessment[]) {
+    const sim = await shouldSimulateError()
+    if (sim) throw new Error("Simulated error in getVolumeByMonth")
+    
     const result = data.reduce((acc, assessment) => {
         const monthNum = new Date(assessment.submittedAt).getMonth() + 1;
         const existingMonth = acc.find(item => item.monthNum === monthNum);
@@ -88,6 +95,9 @@ export async function getVolumeByMonth(data: Assessment[]) {
 }
 
 export async function getTypeDistribution(data: Assessment[]) {
+    const sim = await shouldSimulateError()
+    if (sim) throw new Error("Simulated error in getTypeDistribution")
+    
     return data.reduce((acc, assessment) => {
         const type = assessment.claimType;
         const existingType = acc.find(item => item.type === type);
@@ -101,6 +111,9 @@ export async function getTypeDistribution(data: Assessment[]) {
 }
 
 export async function getProcessingTime(data: Assessment[]) {
+    const sim = await shouldSimulateError()
+    if (sim) throw new Error("Simulated error in getProcessingTime")
+    
     return data.reduce((acc, item) => {
         const monthNum = new Date(item.submittedAt).getMonth() + 1;
         const existingMonth = acc.find(item => item.monthNum === monthNum);
@@ -121,6 +134,9 @@ export async function getProcessingTime(data: Assessment[]) {
 }
 
 export async function getApprovalRate(data: Assessment[]) {
+    const sim = await shouldSimulateError()
+    if (sim) throw new Error("Simulated error in getApprovalRate")
+    
     return data.reduce((acc, item) => {
         const key = item.status;
         const existing = acc.find(i => i.status === key);
