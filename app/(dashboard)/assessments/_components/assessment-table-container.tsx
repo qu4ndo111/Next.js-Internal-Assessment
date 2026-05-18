@@ -14,9 +14,16 @@ export default async function AssessmentTableContainer({ searchParams }: PagePro
     const rawPageIndex = Math.abs(Number(params.page || 1))
     const rawPageSize = Math.abs(Number(params.pageSize || 10))
     const validPageSize = pageSizeList.includes(rawPageSize) ? rawPageSize : 10;
-    
+
     let data = null
 
+    if (!params.page || !params.pageSize) {
+        const newParams = buildRedirectParams(params, {
+            page: "1",
+            pageSize: "10",
+        });
+        redirect(`/assessments?${newParams.toString()}`);
+    }
 
     try {
         data = await getAssessments({
@@ -38,17 +45,28 @@ export default async function AssessmentTableContainer({ searchParams }: PagePro
         const totalPage = Math.ceil(data.totalCount / validPageSize);
         const validPageIndex = rawPageIndex <= totalPage ? rawPageIndex : Math.max(1, totalPage);
         if (validPageIndex !== rawPageIndex || validPageSize !== rawPageSize) {
-            const newSearchParams = new URLSearchParams();
-            if (params.status) newSearchParams.set("status", params.status.toString());
-            if (params.type) newSearchParams.set("type", params.type.toString());
-            if (params.q) newSearchParams.set("q", params.q.toString());
-            if (params.from) newSearchParams.set("from", params.from.toString());
-            if (params.to) newSearchParams.set("to", params.to.toString());
-            if (params.assignedTo) newSearchParams.set("assignedTo", params.assignedTo.toString());
-            newSearchParams.set("page", validPageIndex.toString());
-            newSearchParams.set("pageSize", validPageSize.toString());
-            redirect(`/assessments?${newSearchParams.toString()}`);
+            const newParams = buildRedirectParams(params, {
+                page: validPageIndex.toString(),
+                pageSize: validPageSize.toString(),
+            });
+            redirect(`/assessments?${newParams.toString()}`);
         }
+    }
+
+    function buildRedirectParams(
+        params: Record<string, string | string[] | undefined>,
+        overrides: Record<string, string>
+    ): URLSearchParams {
+        const skip = new Set(Object.keys(overrides));
+        const result = new URLSearchParams(
+            Object.fromEntries(
+                Object.entries(params)
+                    .filter(([key, v]) => v && !skip.has(key))
+                    .map(([k, v]) => [k, v!.toString()])
+            )
+        );
+        Object.entries(overrides).forEach(([k, v]) => result.set(k, v));
+        return result;
     }
 
     return (
