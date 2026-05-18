@@ -10,6 +10,11 @@ export type AssessmentPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 
 export type ClaimType = "MEDICAL" | "ACCIDENT" | "PROPERTY" | "DEATH" | "DISABILITY";
 
+export interface ResponseAssessmentData {
+  totalCount: number;
+  data: Assessment[];
+}
+
 export interface AssessmentDocument {
   id: string;
   name: string;

@@ -8,7 +8,7 @@ import { DataTable } from '@/src/components/ui/data-table';
 import { columns } from './columns';
 import { Assessment } from '@/src/types/assessment';
 
-export default function AssessmentTableClient({ initialData }: { initialData: Assessment[] }) {
+export default function AssessmentTableClient({ initialData, totalCount, pageIndex, pageSize }: { initialData: Assessment[], totalCount: number, pageIndex: number, pageSize: number }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,5 +17,5 @@ export default function AssessmentTableClient({ initialData }: { initialData: As
 
   const assessments = useSelector((state: RootState) => state.assessments.items);
 
-  return <DataTable columns={columns} data={assessments} />;
+  return <DataTable columns={columns} data={assessments} totalCount={totalCount} pageSize={pageSize} pageIndex={pageIndex} />;
 }
