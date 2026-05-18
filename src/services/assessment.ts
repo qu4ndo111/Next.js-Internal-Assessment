@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { FAKE_ASSESSMENTS } from "../data/assessments";
-import { Assessment, AssessmentStatus, CreateAssessmentInput } from "../types/assessment";
+import { Assessment, AssessmentStatus, CreateAssessmentInput, ResponseAssessmentData } from "../types/assessment";
 import { shouldSimulateError } from "../actions/error-simulator.action";
 
 const assessmentsDB = [...FAKE_ASSESSMENTS];
 
-export async function getAssessments(filters?: { status?: string; type?: string; search?: string; from?: string; to?: string, assignedTo?: string }): Promise<Assessment[]> {
+export async function getAssessments(filters?: { status?: string; type?: string; search?: string; from?: string; to?: string, assignedTo?: string, page?: number, pageSize?: number }): Promise<ResponseAssessmentData> {
   await new Promise((resolve) => setTimeout(resolve, 500));
   
   const sim = await shouldSimulateError()
@@ -39,7 +39,21 @@ export async function getAssessments(filters?: { status?: string; type?: string;
   if (filters?.assignedTo) {
     data = data.filter((item) => item.assignedTo === filters.assignedTo);
   }
-  return data;
+
+  if (filters?.page && filters?.pageSize) {
+    const page = filters.page - 1;
+    const pageSize = filters.pageSize;
+    const paginatedData = data.slice(page * pageSize, (page + 1) * pageSize);
+    return {
+      totalCount: data.length,
+      data: paginatedData,
+    };
+  }
+
+  return {
+    totalCount: data.length,
+    data: data,
+  };
 }
 
 export async function getAssessmentById(id: string): Promise<Assessment | undefined> {
