@@ -8,7 +8,7 @@ interface LoginSchema {
   password: string;
 }
 
-export async function fakeLogin(formData: LoginSchema) {
+export async function fakeLogin(formData: LoginSchema, returnUrl?: string) {
   const email = formData.email
   const password = formData.password
 
@@ -23,7 +23,9 @@ export async function fakeLogin(formData: LoginSchema) {
       path: "/",
     })
 
-    redirect("/dashboard")
+    const validatedUrl = validateReturnUrl(returnUrl || "/")
+
+    redirect(validatedUrl);
   }
 
   return { error: "Sai email hoặc mật khẩu!" }
@@ -33,4 +35,23 @@ export async function logout() {
   const cookieStore = await cookies()
   cookieStore.delete("access_token")
   redirect("/login")
+}
+
+
+function validateReturnUrl(returnUrl: string, allowedDomains: string[] = []): string {
+  try {
+    if (returnUrl.startsWith("/")) {
+      return returnUrl;
+    }
+
+    const url = new URL(returnUrl);
+
+    if (allowedDomains.includes(url.hostname)) {
+      return returnUrl;
+    }
+
+    return "/dashboard";
+  } catch {
+    return "/dashboard";
+  }
 }
