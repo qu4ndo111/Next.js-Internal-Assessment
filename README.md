@@ -5,7 +5,7 @@
 <a id="english"></a>
 # Internal Assessment & Reporting Platform
 
-A simplified, production-ready version of an internal assessment and reporting system built for the AZINSU ecosystem.
+A simplified, production-ready version of an internal assessment and reporting system.
 
 Live demo: [nextjs-internal-assessment](https://nextjs-internal-assessment.vercel.app/)
 
