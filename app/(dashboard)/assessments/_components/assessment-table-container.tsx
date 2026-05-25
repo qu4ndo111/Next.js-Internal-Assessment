@@ -1,6 +1,6 @@
 import { getAssessments } from "@/src/services/assessment";
 import AssessmentTableClient from "./assessment-table-client";
-import { ServerErrorState } from "@/src/components/shared/server-error-state";
+import { ServerErrorState } from "@/src/components/shared/client-error-state";
 import { redirect } from "next/navigation";
 
 interface PageProps {
