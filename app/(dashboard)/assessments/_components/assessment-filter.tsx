@@ -82,8 +82,8 @@ export default function AssessmentFilter() {
   };
 
   return (
-    <div className="flex flex-1 items-center space-x-2">
-      <div className="relative w-full max-w-sm">
+    <div className="flex flex-1 items-center flex-wrap gap-2">
+      <div className="relative w-full sm:max-w-sm flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
@@ -96,7 +96,7 @@ export default function AssessmentFilter() {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="gap-2 border-dashed">
+          <Button variant="outline" className="gap-2 border-dashed sm:w-auto w-full">
             <SlidersHorizontal className="h-4 w-4" />
             {t("filter.advanced")}
           </Button>

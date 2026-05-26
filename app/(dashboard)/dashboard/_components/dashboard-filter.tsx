@@ -100,13 +100,13 @@ export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) 
     }
 
     return (
-        <div className="flex items-center gap-2 shrink-0 flex-wrap">
-            <div className="flex items-center rounded-lg border bg-muted/50 p-1 gap-0.5">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+            <div className="flex items-center rounded-lg border bg-muted/50 p-1 gap-0.5 w-full sm:w-auto justify-between sm:justify-start">
                 {periodFilters.map((filter) => (
                     <button
                         key={filter.key}
                         className={cn(
-                            "px-3 py-1.5 text-xs font-medium rounded-md transition-all text-nowrap",
+                            "flex-1 sm:flex-none px-3 py-1.5 text-xs font-medium rounded-md transition-all text-nowrap text-center",
                             filter.key === period
                                 ? "bg-background text-foreground shadow-sm"
                                 : "text-muted-foreground hover:text-foreground"
@@ -118,19 +118,25 @@ export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) 
                 ))}
             </div>
             <Select value={type} onValueChange={handleTypeFilterChange}>
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder={tClaimType("filter.typePlaceholder")} />
+                <SelectTrigger className="w-full sm:w-[180px] justify-between">
+                    <SelectValue placeholder={tClaimType("filter.typePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="all">{tClaimType("claimType.ALL") || "Tất cả"}</SelectItem>
-                  <SelectItem value="MEDICAL">{tClaimType("claimType.MEDICAL")}</SelectItem>
-                  <SelectItem value="ACCIDENT">{tClaimType("claimType.ACCIDENT")}</SelectItem>
-                  <SelectItem value="PROPERTY">{tClaimType("claimType.PROPERTY")}</SelectItem>
-                  <SelectItem value="DEATH">{tClaimType("claimType.DEATH")}</SelectItem>
-                  <SelectItem value="DISABILITY">{tClaimType("claimType.DISABILITY")}</SelectItem>
+                    <SelectItem value="all">{tClaimType("claimType.ALL") || "Tất cả"}</SelectItem>
+                    <SelectItem value="MEDICAL">{tClaimType("claimType.MEDICAL")}</SelectItem>
+                    <SelectItem value="ACCIDENT">{tClaimType("claimType.ACCIDENT")}</SelectItem>
+                    <SelectItem value="PROPERTY">{tClaimType("claimType.PROPERTY")}</SelectItem>
+                    <SelectItem value="DEATH">{tClaimType("claimType.DEATH")}</SelectItem>
+                    <SelectItem value="DISABILITY">{tClaimType("claimType.DISABILITY")}</SelectItem>
                 </SelectContent>
-              </Select>
-            <Button variant="outline" size="sm" className="gap-2 h-9" onClick={handleExport} disabled={data.length === 0}>
+            </Select>
+            <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2 h-9 w-full sm:w-auto justify-center sm:justify-start shrink-0" 
+                onClick={handleExport} 
+                disabled={data.length === 0}
+            >
                 <Download className="h-3.5 w-3.5" />
                 {t("exportReport")}
             </Button>

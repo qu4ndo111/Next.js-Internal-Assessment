@@ -34,7 +34,7 @@ export default function ApprovalRateChart({ approvalRateData }: { approvalRateDa
     }))
 
     return (
-        <div className="flex flex-col gap-3 h-[260px]">
+        <div className="flex flex-col gap-3 h-[260px] w-full min-w-0">
             <div className="flex-1 w-full min-h-0">
                 <ResponsiveContainer width="100%" height={180}>
                     <RadialBarChart
