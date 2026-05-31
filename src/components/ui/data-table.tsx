@@ -31,9 +31,17 @@ interface DataTableProps<TData, TValue> {
   totalCount?: number,
   pageIndex?: number,
   pageSize?: number,
+  manualPagination?: boolean,
 }
 
-export function DataTable<TData, TValue>({ columns, data, totalCount = 0, pageIndex = 1, pageSize = 10 }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ 
+  columns, 
+  data, 
+  totalCount = 0, 
+  pageIndex = 1, 
+  pageSize = 10,
+  manualPagination = false 
+}: DataTableProps<TData, TValue>) {
   "use no memo";
   const t = useTranslations("src.components.ui.data-table")
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -42,27 +50,35 @@ export function DataTable<TData, TValue>({ columns, data, totalCount = 0, pageIn
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
+  const [pagination, setPagination] = useState({
+    pageIndex: pageIndex - 1,
+    pageSize,
+  });
+
   const table = useReactTable({
     columns,
     data,
     state: {
       sorting,
-      pagination: {
-        pageIndex: pageIndex - 1,
-        pageSize,
-      },
+      pagination: manualPagination 
+        ? { pageIndex: pageIndex - 1, pageSize } 
+        : pagination,
     },
-    pageCount: Math.ceil(totalCount / pageSize),
-    manualPagination: true,
+    pageCount: manualPagination ? Math.ceil(totalCount / pageSize) : undefined,
+    manualPagination: manualPagination,
     onPaginationChange: (updater) => {
-      const newPagination = typeof updater === "function" ? updater(table.getState().pagination) : updater;
-      const currentSearchParams = new URLSearchParams(searchParams?.toString() || "");
-      currentSearchParams.set("page", String(newPagination.pageIndex + 1));
-      currentSearchParams.set("pageSize", String(newPagination.pageSize));
-      const search = currentSearchParams.toString();
-      startTransition(() => {
-        router.replace(`${pathname}?${search}`);
-      })
+      if (manualPagination) {
+        const newPagination = typeof updater === "function" ? updater({ pageIndex: pageIndex - 1, pageSize }) : updater;
+        const currentSearchParams = new URLSearchParams(searchParams?.toString() || "");
+        currentSearchParams.set("page", String(newPagination.pageIndex + 1));
+        currentSearchParams.set("pageSize", String(newPagination.pageSize));
+        const search = currentSearchParams.toString();
+        startTransition(() => {
+          router.replace(`${pathname}?${search}`);
+        })
+      } else {
+        setPagination(updater);
+      }
     },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -131,7 +147,7 @@ export function DataTable<TData, TValue>({ columns, data, totalCount = 0, pageIn
           {isPending
             ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
             : <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-foreground">
-              {table.getFilteredRowModel().rows.length}
+              {manualPagination ? totalCount : data.length}
             </span>
           }
           <span>{t("records")}</span>

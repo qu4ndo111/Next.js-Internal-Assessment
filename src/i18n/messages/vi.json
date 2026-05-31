@@ -66,6 +66,14 @@
     "targetLabel": "Mục tiêu",
     "month": "Tháng"
   },
+  "ClaimType": {
+    "MEDICAL": "Y tế",
+    "ACCIDENT": "Tai nạn",
+    "PROPERTY": "Tài sản",
+    "DEATH": "Tử vong",
+    "DISABILITY": "Thương tật",
+    "ALL": "Tất cả"
+  },
   "Assessments": {
     "title": "Hồ sơ thẩm định",
     "description": "Hệ thống quản lý và xét duyệt các yêu cầu bồi thường bảo hiểm nội bộ.",
@@ -141,14 +149,6 @@
       "PARTIALLY_APPROVED": "Duyệt một phần",
       "ALL": "Tất cả"
     },
-    "claimType": {
-      "MEDICAL": "Y tế",
-      "ACCIDENT": "Tai nạn",
-      "PROPERTY": "Tài sản",
-      "DEATH": "Tử vong",
-      "DISABILITY": "Thương tật",
-      "ALL": "Tất cả"
-    },
     "priority": {
       "URGENT": "GẤP",
       "HIGH": "CAO",
@@ -209,6 +209,43 @@
       "submittedAt": "Ngày tạo",
       "processingDays": "Số ngày xử lý"
     }
+  },
+  "Reports": {
+    "title": "Báo cáo & Thống kê",
+    "description": "Báo cáo toàn diện về hồ sơ thẩm định bồi thường và hiệu suất của thẩm định viên.",
+    "filter": {
+      "selectDateRange": "Chọn khoảng thời gian...",
+      "claimType": "Loại bồi thường",
+      "claimTypePlaceholder": "Chọn loại bồi thường",
+      "clear": "Xóa",
+      "apply": "Áp dụng"
+    },
+    "tabs": {
+      "monthly": "Tổng hợp theo tháng",
+      "assessor": "Hiệu suất thẩm định viên"
+    },
+    "monthlyTable": {
+      "month": "Tháng",
+      "total": "Tổng hồ sơ",
+      "approved": "Đã duyệt",
+      "rejected": "Từ chối",
+      "inProgress": "Đang xử lý",
+      "avgDays": "Số ngày TB",
+      "claimedAmount": "Số tiền yêu cầu",
+      "assessedAmount": "Số tiền duyệt"
+    },
+    "assessorTable": {
+      "assessor": "Thẩm định viên",
+      "total": "Hồ sơ được giao",
+      "completed": "Đã hoàn thành",
+      "inProgress": "Đang xử lý",
+      "avgDays": "Số ngày TB",
+      "sla": "Tỷ lệ SLA",
+      "approved": "Đã duyệt",
+      "rejected": "Từ chối"
+    },
+    "exportCsv": "Xuất CSV",
+    "print": "In báo cáo"
   },
   "src": {
     "components": {

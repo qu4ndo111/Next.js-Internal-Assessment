@@ -66,6 +66,14 @@
     "targetLabel": "Target",
     "month": "Month"
   },
+  "ClaimType": {
+    "MEDICAL": "Medical",
+    "ACCIDENT": "Accident",
+    "PROPERTY": "Property",
+    "DEATH": "Death",
+    "DISABILITY": "Disability",
+    "ALL": "All"
+  },
   "Assessments": {
     "title": "Assessment Profiles",
     "description": "Internal insurance compensation claims management and review system.",
@@ -141,14 +149,6 @@
       "PARTIALLY_APPROVED": "Partially Approved",
       "ALL": "All"
     },
-    "claimType": {
-      "MEDICAL": "Medical",
-      "ACCIDENT": "Accident",
-      "PROPERTY": "Property",
-      "DEATH": "Death",
-      "DISABILITY": "Disability",
-      "ALL": "All"
-    },
     "priority": {
       "URGENT": "URGENT",
       "HIGH": "HIGH",
@@ -208,6 +208,43 @@
       "submittedAt": "Submitted At",
       "processingDays": "Processing Days"
     }
+  },
+  "Reports": {
+    "title": "Reports & Analytics",
+    "description": "Comprehensive reports on insurance claim assessments and assessor performance.",
+    "filter": {
+      "selectDateRange": "Select date range...",
+      "claimType": "Claim Type",
+      "claimTypePlaceholder": "Select type",
+      "clear": "Clear",
+      "apply": "Apply"
+    },
+    "tabs": {
+      "monthly": "Monthly Summary",
+      "assessor": "Assessor Performance"
+    },
+    "monthlyTable": {
+      "month": "Month",
+      "total": "Total Claims",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "inProgress": "In Progress",
+      "avgDays": "Avg Days",
+      "claimedAmount": "Claimed Amount",
+      "assessedAmount": "Assessed Amount"
+    },
+    "assessorTable": {
+      "assessor": "Assessor",
+      "total": "Total Assigned",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "avgDays": "Avg Days",
+      "sla": "SLA %",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "exportCsv": "Export CSV",
+    "print": "Print Report"
   },
   "src": {
     "components": {

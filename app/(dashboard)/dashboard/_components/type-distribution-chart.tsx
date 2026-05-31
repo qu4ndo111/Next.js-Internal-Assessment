@@ -18,7 +18,7 @@ const TYPE_COLORS: Record<string, string> = {
 }
 
 export default function TypeDistributionChart({ typeDistributionData }: { typeDistributionData: { type: string, value: number }[] }) {
-    const t = useTranslations("Assessments.claimType");
+    const t = useTranslations("ClaimType");
     const tCommon = useTranslations("Common");
 
     if (!typeDistributionData || typeDistributionData.length === 0) {
@@ -46,7 +46,7 @@ export default function TypeDistributionChart({ typeDistributionData }: { typeDi
     const total = pieChartData.reduce((sum, d) => sum + d.value, 0)
 
     return (
-        <div className="flex flex-col gap-2 h-[240px] w-full">
+        <div className="flex flex-col gap-2 h-[240px] w-full min-w-0">
             <ChartContainer className="w-full h-[180px]" config={chartConfig}>
                 <PieChart>
                     <ChartTooltip

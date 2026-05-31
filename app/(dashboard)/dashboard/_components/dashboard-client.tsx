@@ -122,7 +122,7 @@ export default function DashboardPage({
   ];
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6 md:p-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
           <div>
@@ -136,7 +136,7 @@ export default function DashboardPage({
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap w-full lg:w-auto justify-start lg:justify-end">
           <Button
             onClick={() => refetch()}
             variant="ghost"
@@ -192,42 +192,42 @@ export default function DashboardPage({
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="flex flex-col border-muted-foreground/15">
+        <Card className="flex flex-col border-muted-foreground/15 min-w-0 overflow-hidden">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-bold">{t("volumeByMonth")}</CardTitle>
             <CardDescription className="text-xs">{t("volumeDesc")}</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 pl-2">
+          <CardContent className="flex-1 pl-2 min-w-0">
             <VolumeChart volumeData={volumeData} />
           </CardContent>
         </Card>
 
-        <Card className="flex flex-col border-muted-foreground/15">
+        <Card className="flex flex-col border-muted-foreground/15 min-w-0 overflow-hidden">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-bold">{t("distributionByType")}</CardTitle>
             <CardDescription className="text-xs">{t("distributionDesc")}</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1">
+          <CardContent className="flex-1 min-w-0">
             <TypeDistributionChart typeDistributionData={typeDistributionData} />
           </CardContent>
         </Card>
 
-        <Card className="flex flex-col border-muted-foreground/15">
+        <Card className="flex flex-col border-muted-foreground/15 min-w-0 overflow-hidden">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-bold">{t("processingTimeTrend")}</CardTitle>
             <CardDescription className="text-xs">{t("processingTimeDesc")}</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1 pl-2">
+          <CardContent className="flex-1 pl-2 min-w-0">
             <ProcessingTimeChart processingTimeData={processingTimeData} />
           </CardContent>
         </Card>
 
-        <Card className="flex flex-col border-muted-foreground/15">
+        <Card className="flex flex-col border-muted-foreground/15 min-w-0 overflow-hidden">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg font-bold">{t("approvalRateTitle")}</CardTitle>
             <CardDescription className="text-xs">{t("approvalRateDesc")}</CardDescription>
           </CardHeader>
-          <CardContent className="flex-1">
+          <CardContent className="flex-1 min-w-0">
             <ApprovalRateChart approvalRateData={approvalRateData} />
           </CardContent>
         </Card>
@@ -267,7 +267,7 @@ function DashboardSkeleton({ title, description }: { title: string; description:
 
       <div className="grid gap-4 md:grid-cols-2">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i} className="flex flex-col border-muted-foreground/15">
+          <Card key={i} className="flex flex-col border-muted-foreground/15 min-w-0 overflow-hidden">
             <CardHeader className="pb-2 space-y-1">
               <Skeleton className="h-6 w-48" />
               <Skeleton className="h-3 w-64" />

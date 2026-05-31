@@ -30,7 +30,7 @@ export const columns: ColumnDef<Assessment>[] = [
       return <>{t("claimType")}</>
     },
     cell: function Cell({ row }) {
-      const t = useTranslations("Assessments.claimType")
+      const t = useTranslations("ClaimType")
       const type = row.getValue("claimType") as string
       return (
         <span className="text-xs font-medium px-2 py-1 rounded-full bg-secondary text-secondary-foreground">

@@ -23,6 +23,7 @@ interface AssessmentDetailClientProps {
 export default function AssessmentDetailClient({ data }: AssessmentDetailClientProps) {
     const t = useTranslations("Assessments");
     const tDetails = useTranslations("Assessments.details");
+    const tClaimType = useTranslations("ClaimType");
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -111,7 +112,7 @@ export default function AssessmentDetailClient({ data }: AssessmentDetailClientP
                                         <ShieldAlert className="h-4 w-4" />
                                         {tDetails("claimType")}
                                     </p>
-                                    <p className="font-semibold">{t(`claimType.${assessment.claimType}`)}</p>
+                                    <p className="font-semibold">{tClaimType(assessment.claimType)}</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-sm font-medium text-muted-foreground flex items-center gap-2">

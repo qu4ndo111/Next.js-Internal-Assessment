@@ -16,8 +16,8 @@ export default async function AssessmentsPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-6 md:p-6">
+      <div className="flex items-start justify-between gap-2 flex-col sm:items-center sm:flex-row ">
         <div>
           <h1 className="text-3xl font-bold tracking-tight bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             {t("title")}

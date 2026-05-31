@@ -18,6 +18,7 @@ import { DateRange } from "react-day-picker";
 
 export default function AssessmentFilter() {
   const t = useTranslations("Assessments");
+  const tClaimType = useTranslations("ClaimType");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -82,8 +83,8 @@ export default function AssessmentFilter() {
   };
 
   return (
-    <div className="flex flex-1 items-center space-x-2">
-      <div className="relative w-full max-w-sm">
+    <div className="flex flex-1 items-center flex-wrap gap-2">
+      <div className="relative w-full sm:max-w-sm flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
@@ -96,7 +97,7 @@ export default function AssessmentFilter() {
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="gap-2 border-dashed">
+          <Button variant="outline" className="gap-2 border-dashed sm:w-auto w-full">
             <SlidersHorizontal className="h-4 w-4" />
             {t("filter.advanced")}
           </Button>
@@ -128,12 +129,12 @@ export default function AssessmentFilter() {
                   <SelectValue placeholder={t("filter.typePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="all">{t("claimType.ALL") || "Tất cả"}</SelectItem>
-                  <SelectItem value="MEDICAL">{t("claimType.MEDICAL")}</SelectItem>
-                  <SelectItem value="ACCIDENT">{t("claimType.ACCIDENT")}</SelectItem>
-                  <SelectItem value="PROPERTY">{t("claimType.PROPERTY")}</SelectItem>
-                  <SelectItem value="DEATH">{t("claimType.DEATH")}</SelectItem>
-                  <SelectItem value="DISABILITY">{t("claimType.DISABILITY")}</SelectItem>
+                  <SelectItem value="all">{tClaimType("ALL") || "Tất cả"}</SelectItem>
+                  <SelectItem value="MEDICAL">{tClaimType("MEDICAL")}</SelectItem>
+                  <SelectItem value="ACCIDENT">{tClaimType("ACCIDENT")}</SelectItem>
+                  <SelectItem value="PROPERTY">{tClaimType("PROPERTY")}</SelectItem>
+                  <SelectItem value="DEATH">{tClaimType("DEATH")}</SelectItem>
+                  <SelectItem value="DISABILITY">{tClaimType("DISABILITY")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -182,7 +183,7 @@ export default function AssessmentFilter() {
                   <SelectValue placeholder={t("filter.assignedToPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="all">{t("claimType.ALL")}</SelectItem>
+                  <SelectItem value="all">{tClaimType("ALL")}</SelectItem>
                   <SelectItem value="Trần Thị B">Trần Thị B</SelectItem>
                   <SelectItem value="Phạm Văn D">Phạm Văn D</SelectItem>
                   <SelectItem value="Nguyễn Văn F">Nguyễn Văn F</SelectItem>
