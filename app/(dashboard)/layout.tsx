@@ -37,10 +37,10 @@ export default async function DashboardLayout({
             <span className="text-lg">AQ Portal</span>
           </Link>
         </div>
-        
+
         <div className="flex-1 overflow-auto py-4">
           <SidebarNav />
-          
+
           <div className="px-2 lg:px-4 mt-2">
             <div className="my-2 border-t" />
             <Link
@@ -70,7 +70,7 @@ export default async function DashboardLayout({
             <UserMenu />
           </div>
         </header>
-        
+
         <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
           {children}
         </main>

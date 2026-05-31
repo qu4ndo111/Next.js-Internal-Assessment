@@ -17,5 +17,5 @@ export default function AssessmentTableClient({ initialData, totalCount, pageInd
 
   const assessments = useSelector((state: RootState) => state.assessments.items);
 
-  return <DataTable columns={columns} data={assessments} totalCount={totalCount} pageSize={pageSize} pageIndex={pageIndex} />;
+  return <DataTable columns={columns} data={assessments} totalCount={totalCount} pageSize={pageSize} pageIndex={pageIndex} manualPagination={true} />;
 }

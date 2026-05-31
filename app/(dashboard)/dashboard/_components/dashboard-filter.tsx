@@ -13,7 +13,8 @@ type PeriodType = "filter6Months" | "filterThisYear" | "filter12Months"
 
 export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) {
     const t = useTranslations("Dashboard");
-    const tClaimType = useTranslations("Assessments");
+    const tAssessments = useTranslations("Assessments");
+    const tClaimType = useTranslations("ClaimType");
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -63,7 +64,7 @@ export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) 
     }
 
     const handleExport = () => {
-        const tCsv = (key: string) => tClaimType(`csvHeaders.${key}`);
+        const tCsv = (key: string) => tAssessments(`csvHeaders.${key}`);
         
         const headers = [
             tCsv("profileId"),
@@ -80,8 +81,8 @@ export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) 
             ...data.map(d => [
                 d.id,
                 d.claimId,
-                tClaimType(`claimType.${d.claimType}`),
-                tClaimType(`status.${d.status}`),
+                tClaimType(d.claimType),
+                tAssessments(`status.${d.status}`),
                 d.claimedAmount,
                 d.submittedAt,
                 d.processingDays ?? ""
@@ -119,15 +120,15 @@ export default function DashboardFilter({ data = [] }: { data?: Assessment[] }) 
             </div>
             <Select value={type} onValueChange={handleTypeFilterChange}>
                 <SelectTrigger className="w-full sm:w-[180px] justify-between">
-                    <SelectValue placeholder={tClaimType("filter.typePlaceholder")} />
+                    <SelectValue placeholder={tAssessments("filter.typePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                    <SelectItem value="all">{tClaimType("claimType.ALL") || "Tất cả"}</SelectItem>
-                    <SelectItem value="MEDICAL">{tClaimType("claimType.MEDICAL")}</SelectItem>
-                    <SelectItem value="ACCIDENT">{tClaimType("claimType.ACCIDENT")}</SelectItem>
-                    <SelectItem value="PROPERTY">{tClaimType("claimType.PROPERTY")}</SelectItem>
-                    <SelectItem value="DEATH">{tClaimType("claimType.DEATH")}</SelectItem>
-                    <SelectItem value="DISABILITY">{tClaimType("claimType.DISABILITY")}</SelectItem>
+                    <SelectItem value="all">{tClaimType("ALL") || "Tất cả"}</SelectItem>
+                    <SelectItem value="MEDICAL">{tClaimType("MEDICAL")}</SelectItem>
+                    <SelectItem value="ACCIDENT">{tClaimType("ACCIDENT")}</SelectItem>
+                    <SelectItem value="PROPERTY">{tClaimType("PROPERTY")}</SelectItem>
+                    <SelectItem value="DEATH">{tClaimType("DEATH")}</SelectItem>
+                    <SelectItem value="DISABILITY">{tClaimType("DISABILITY")}</SelectItem>
                 </SelectContent>
             </Select>
             <Button 

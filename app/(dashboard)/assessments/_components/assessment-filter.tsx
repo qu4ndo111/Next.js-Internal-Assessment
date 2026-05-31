@@ -18,6 +18,7 @@ import { DateRange } from "react-day-picker";
 
 export default function AssessmentFilter() {
   const t = useTranslations("Assessments");
+  const tClaimType = useTranslations("ClaimType");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -128,12 +129,12 @@ export default function AssessmentFilter() {
                   <SelectValue placeholder={t("filter.typePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="all">{t("claimType.ALL") || "Tất cả"}</SelectItem>
-                  <SelectItem value="MEDICAL">{t("claimType.MEDICAL")}</SelectItem>
-                  <SelectItem value="ACCIDENT">{t("claimType.ACCIDENT")}</SelectItem>
-                  <SelectItem value="PROPERTY">{t("claimType.PROPERTY")}</SelectItem>
-                  <SelectItem value="DEATH">{t("claimType.DEATH")}</SelectItem>
-                  <SelectItem value="DISABILITY">{t("claimType.DISABILITY")}</SelectItem>
+                  <SelectItem value="all">{tClaimType("ALL") || "Tất cả"}</SelectItem>
+                  <SelectItem value="MEDICAL">{tClaimType("MEDICAL")}</SelectItem>
+                  <SelectItem value="ACCIDENT">{tClaimType("ACCIDENT")}</SelectItem>
+                  <SelectItem value="PROPERTY">{tClaimType("PROPERTY")}</SelectItem>
+                  <SelectItem value="DEATH">{tClaimType("DEATH")}</SelectItem>
+                  <SelectItem value="DISABILITY">{tClaimType("DISABILITY")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -182,7 +183,7 @@ export default function AssessmentFilter() {
                   <SelectValue placeholder={t("filter.assignedToPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="all">{t("claimType.ALL")}</SelectItem>
+                  <SelectItem value="all">{tClaimType("ALL")}</SelectItem>
                   <SelectItem value="Trần Thị B">Trần Thị B</SelectItem>
                   <SelectItem value="Phạm Văn D">Phạm Văn D</SelectItem>
                   <SelectItem value="Nguyễn Văn F">Nguyễn Văn F</SelectItem>

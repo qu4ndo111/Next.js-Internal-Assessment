@@ -18,7 +18,7 @@ const TYPE_COLORS: Record<string, string> = {
 }
 
 export default function TypeDistributionChart({ typeDistributionData }: { typeDistributionData: { type: string, value: number }[] }) {
-    const t = useTranslations("Assessments.claimType");
+    const t = useTranslations("ClaimType");
     const tCommon = useTranslations("Common");
 
     if (!typeDistributionData || typeDistributionData.length === 0) {

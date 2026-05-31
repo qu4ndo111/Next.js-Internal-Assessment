@@ -45,6 +45,7 @@ const getAssessmentSchema = (t: TFunction) => z.object({
 export default function AssessmentForm() {
     const t = useTranslations("Assessments.create");
     const tAssessments = useTranslations("Assessments");
+    const tClaimType = useTranslations("ClaimType");
     const locale = useLocale();
     const router = useRouter();
     const dateLocale = locale === "vi" ? vi : enUS;
@@ -236,11 +237,11 @@ export default function AssessmentForm() {
                                         <SelectValue placeholder={t("fields.claimTypePlaceholder")} />
                                     </SelectTrigger>
                                     <SelectContent position="popper">
-                                        <SelectItem value="MEDICAL">{tAssessments("claimType.MEDICAL")}</SelectItem>
-                                        <SelectItem value="ACCIDENT">{tAssessments("claimType.ACCIDENT")}</SelectItem>
-                                        <SelectItem value="PROPERTY">{tAssessments("claimType.PROPERTY")}</SelectItem>
-                                        <SelectItem value="DEATH">{tAssessments("claimType.DEATH")}</SelectItem>
-                                        <SelectItem value="DISABILITY">{tAssessments("claimType.DISABILITY")}</SelectItem>
+                                        <SelectItem value="MEDICAL">{tClaimType("MEDICAL")}</SelectItem>
+                                        <SelectItem value="ACCIDENT">{tClaimType("ACCIDENT")}</SelectItem>
+                                        <SelectItem value="PROPERTY">{tClaimType("PROPERTY")}</SelectItem>
+                                        <SelectItem value="DEATH">{tClaimType("DEATH")}</SelectItem>
+                                        <SelectItem value="DISABILITY">{tClaimType("DISABILITY")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             )}
