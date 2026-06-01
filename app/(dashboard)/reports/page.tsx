@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import ReportActions from "./_components/report-actions";
 import { Suspense } from "react";
 import TableSkeleton from "@/src/components/shared/skeletons/TableSkeleton";
+import { ServerErrorState } from "@/src/components/shared/client-error-state";
 
 interface ReportsPageProps {
     searchParams: Promise<{
@@ -79,7 +80,19 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
 }
 
 async function MonthlyTableContainer({ params }: { params: any }) {
-    const monthlyReportData = await getMonthlyReportData(params);
+    let monthlyReportData;
+    try {
+        monthlyReportData = await getMonthlyReportData(params);
+    } catch (error) {
+        return (
+            <ServerErrorState className="w-full" />
+        )
+    }
+
+    if (!monthlyReportData) return (
+        <ServerErrorState className="w-full" />
+    )
+
     return (
         <div className="space-y-4 animate-in fade-in duration-300">
             <div className="flex justify-end">
@@ -93,7 +106,19 @@ async function MonthlyTableContainer({ params }: { params: any }) {
 }
 
 async function AssessorTableContainer({ params }: { params: any }) {
-    const assessorReportData = await getAssessorReportData(params);
+    let assessorReportData;
+    try {
+        assessorReportData = await getAssessorReportData(params);
+    } catch (error) {
+        return (
+            <ServerErrorState className="w-full" />
+        )
+    }
+
+    if (!assessorReportData) return (
+        <ServerErrorState className="w-full" />
+    )
+
     return (
         <div className="space-y-4 animate-in fade-in duration-300">
             <div className="flex justify-end">

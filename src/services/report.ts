@@ -2,6 +2,7 @@
 
 import { FAKE_ASSESSMENTS } from "../data/assessments";
 import { MonthlyReportRow, AssessorReportRow } from "../types/report";
+import { shouldSimulateError } from "../actions/error-simulator.action";
 
 export interface ReportFilters {
   from?: string;
@@ -11,6 +12,9 @@ export interface ReportFilters {
 
 export async function getMonthlyReportData(filters?: ReportFilters): Promise<MonthlyReportRow[]> {
   await new Promise((resolve) => setTimeout(resolve, 300));
+
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error")
 
   let filteredData = [...FAKE_ASSESSMENTS];
 
@@ -69,6 +73,9 @@ export async function getMonthlyReportData(filters?: ReportFilters): Promise<Mon
 
 export async function getAssessorReportData(filters?: ReportFilters): Promise<AssessorReportRow[]> {
   await new Promise((resolve) => setTimeout(resolve, 300));
+
+  const sim = await shouldSimulateError()
+  if (sim) throw new Error("Simulated error")
 
   let filteredData = [...FAKE_ASSESSMENTS];
 
