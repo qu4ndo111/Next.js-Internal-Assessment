@@ -20,7 +20,6 @@ interface ReportsPageProps {
 }
 
 export default async function ReportsPage({ searchParams }: ReportsPageProps) {
-    // redirect("/dashboard");
     const t = await getTranslations("Reports");
     const params = await searchParams;
     const activeTab: string = params.tab;
