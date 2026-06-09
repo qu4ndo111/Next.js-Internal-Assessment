@@ -141,7 +141,6 @@ export default function AssessmentForm() {
 
     const uploadFiles = (files: File[]) => {
         console.log(files);
-
     }
 
     const onSubmit = async (values: z.infer<typeof newAssessmentSchema>) => {
