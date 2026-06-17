@@ -26,7 +26,9 @@ Insurance assessors need a centralized platform to manage, review, and analyze c
 - **Detailed Assessment View**: Inspect individual assessment details and history.
 - **Quick Review**: Actions to approve, reject, or request more information.
 - **Reporting Dashboard**: Interactive charts (Recharts) and KPI cards visualizing claim volume, types, processing time trends, and approval rates.
-- **Data Export**: Export filtered assessment reports to CSV with localized headers and data mapping.
+- **Detailed Tabular Reports**: Dedicated reports page featuring Monthly Reports (claimed/assessed amounts, avg days) and Assessor Performance statistics (SLA, volume).
+- **Advanced Filtering**: Filter reports dynamically by date range and assessment type.
+- **CSV Data Export**: Export report datasets directly to CSV files with localized headers.
 - **Internationalization (i18n)**: Full support for English and Vietnamese languages using `next-intl`.
 - **Responsive UI**: A modern, mobile-friendly interface with sidebar navigation and light/dark mode support.
 
@@ -94,7 +96,9 @@ Các chuyên viên thẩm định bảo hiểm cần một nền tảng tập tr
 - **Chi tiết Hồ sơ**: Kiểm tra thông tin chi tiết và lịch sử của từng hồ sơ.
 - **Duyệt nhanh (Quick Review)**: Thao tác phê duyệt, từ chối hoặc yêu cầu bổ sung thông tin.
 - **Dashboard Báo cáo**: Biểu đồ tương tác (Recharts) và thẻ KPI trực quan hóa số lượng yêu cầu, loại hình, xu hướng thời gian xử lý và tỷ lệ phê duyệt.
-- **Xuất Dữ liệu**: Xuất báo cáo dữ liệu đã lọc ra file CSV, hỗ trợ tiêu đề và giá trị được dịch sang ngôn ngữ tương ứng.
+- **Báo cáo Chi tiết dạng Bảng**: Trang báo cáo chuyên biệt cung cấp Báo cáo theo tháng (doanh thu yêu cầu/thực duyệt, ngày xử lý trung bình) và Báo cáo hiệu suất thẩm định viên (chỉ số SLA, số lượng hồ sơ xử lý).
+- **Bộ lọc nâng cao**: Lọc dữ liệu báo cáo linh hoạt theo khoảng thời gian và loại hình hồ sơ.
+- **Xuất Dữ liệu CSV**: Hỗ trợ xuất trực tiếp dữ liệu báo cáo ra file CSV với tiêu đề và dữ liệu được bản địa hóa.
 - **Đa Ngôn ngữ (i18n)**: Hỗ trợ hoàn chỉnh Tiếng Anh và Tiếng Việt sử dụng `next-intl`.
 - **Giao diện Responsive**: Giao diện hiện đại, thân thiện với thiết bị di động, tích hợp thanh điều hướng (sidebar) và hỗ trợ chế độ Tối/Sáng (Dark mode).
 
