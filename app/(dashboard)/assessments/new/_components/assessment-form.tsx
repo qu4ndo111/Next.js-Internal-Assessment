@@ -26,6 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { ClaimType } from "@/src/types/assessment";
+import dayjs from "dayjs";
 
 type TFunction = ReturnType<typeof useTranslations<"Assessments.create">>;
 
@@ -360,6 +361,7 @@ export default function AssessmentForm() {
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             locale={dateLocale}
+                                            disabled={{ before: dayjs().startOf('day').toDate() }}
                                         />
                                     </PopoverContent>
                                 </Popover>
